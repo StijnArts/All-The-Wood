@@ -1,0 +1,15 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+issueTrackerURL="https://github.com/Samlegamer/Macaw-s-Fences-Compat/issues"
+
+[[mods]]
+modId="all_the_wood"
+version="1.16.5-1.1"
+displayName="All the Wood"
+displayURL="y"
+credits=""
+authors="Drai"
+description='''
+Compatibility between A lot of mods!
+'''
