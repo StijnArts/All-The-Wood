@@ -1,4 +1,4 @@
-package Net.Drai.AllTheWood.misc;
+package Net.Drai.AllTheWood.block;
 
 public enum BlockTypes {
     //Full Blocks
@@ -117,7 +117,7 @@ public enum BlockTypes {
     FENCE,
     FENCE_GATE,
     LADDER,
-    LOG,
+    LOG, //AxisBlock
     LOG_STRIPPED,
     PLANKS,
     PRESSURE_PLATE,

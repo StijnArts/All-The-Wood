@@ -13,7 +13,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        //withExistingParent("test", modLoc("block/silver_block"));
+        withExistingParent("test_block", modLoc("block/test_block"));
 
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
 

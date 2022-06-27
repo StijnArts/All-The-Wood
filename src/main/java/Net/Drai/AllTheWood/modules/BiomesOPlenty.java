@@ -1,28 +1,30 @@
 package Net.Drai.AllTheWood.modules;
 
-import Net.Drai.AllTheWood.misc.*;
-import net.minecraft.block.material.*;
-import org.apache.logging.log4j.*;
+import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.material.*;
 
 import java.util.*;
 
 public class BiomesOPlenty extends SimpleModule{
     public static ArrayList<ATWMaterial> MATERIALS = new ArrayList<>();
+    public ArrayList<BlockType> BLOCK_TYPES = new ArrayList<>();
     public ArrayList<BlockTypes> MISSING_BLOCK_TYPES = new ArrayList<>();
-    private String modId = "biomesoplenty";
-
-    public BiomesOPlenty(){
+    public BiomesOPlenty(String modId){
+        super(modId);
         registerMissingBlockTypes();
-
-        registerModule();
+        registerModBlockTypes();
+        setBLOCK_TYPES(BLOCK_TYPES);
+        registerMaterials();
+        setMATERIALS(MATERIALS);
     }
+
     @Override
     public void registerModBlockTypes() {
 
     }
 
     public void registerMissingBlockTypes() {
-        System.out.println("registerMissingBlockTypes method called on"+modId);
+        System.out.println("registerMissingBlockTypes method called on"+getModId());
         MISSING_BLOCK_TYPES.add(BlockTypes.BAR_STOOL);
         MISSING_BLOCK_TYPES.add(BlockTypes.CHAIR);
         MISSING_BLOCK_TYPES.add(BlockTypes.TABURET);
@@ -31,7 +33,7 @@ public class BiomesOPlenty extends SimpleModule{
     }
 
     public String missingBlockTypesToString(){
-        String returnValue = "Missing Blocktypes for "+modId+":";
+        String returnValue = "Missing Blocktypes for "+getModId()+":";
         for (BlockTypes blocktype: MISSING_BLOCK_TYPES
         ) {
             returnValue = returnValue + blocktype.name();
@@ -41,7 +43,7 @@ public class BiomesOPlenty extends SimpleModule{
 
     @Override
     public void registerMaterials() {
-        MATERIALS.add(new ATWMaterial("fir", MaterialColor.WOOD, MISSING_BLOCK_TYPES));
+
     }
 
 

@@ -1,9 +1,9 @@
 package Net.Drai.AllTheWood.modules;
 
 import Net.Drai.AllTheWood.*;
-import Net.Drai.AllTheWood.misc.*;
+import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.material.*;
 import net.minecraftforge.fml.*;
-import org.apache.logging.log4j.*;
 
 import java.util.*;
 
@@ -15,9 +15,12 @@ public abstract class SimpleModule {
 
 
     private ArrayList<BlockType> BLOCK_TYPES = new ArrayList<>();
+    public SimpleModule(String modId){
+        this.MATERIALS = MATERIALS;
+        this.modId = modId;
+        registerModule();
+    }
 
-
-    public ArrayList<BlockTypes> MISSING_BLOCK_TYPES;
     public void registerModule(){
         if(ModList.get().isLoaded(modId) || modId == "minecraft"){
             registerModBlockTypes();
@@ -26,9 +29,7 @@ public abstract class SimpleModule {
         }
     }
     public abstract void registerModBlockTypes();
-    public abstract void registerMissingBlockTypes();
     public abstract void registerMaterials();
-    public abstract String missingBlockTypesToString();
     public ArrayList<ATWMaterial> getMATERIALS() {
         return MATERIALS;
     }
@@ -37,5 +38,12 @@ public abstract class SimpleModule {
     }
     public String getModId() {
         return modId;
+    }
+    public void setMATERIALS(ArrayList<ATWMaterial> MATERIALS) {
+        this.MATERIALS = MATERIALS;
+    }
+
+    public void setBLOCK_TYPES(ArrayList<BlockType> BLOCK_TYPES) {
+        this.BLOCK_TYPES = BLOCK_TYPES;
     }
 }
