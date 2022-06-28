@@ -25,11 +25,11 @@ public class BiomesOPlenty extends SimpleModule{
 
     public void registerMissingBlockTypes() {
         System.out.println("registerMissingBlockTypes method called on"+getModId());
-        MISSING_BLOCK_TYPES.add(BlockTypes.BAR_STOOL);
+        /*MISSING_BLOCK_TYPES.add(BlockTypes.BAR_STOOL);
         MISSING_BLOCK_TYPES.add(BlockTypes.CHAIR);
         MISSING_BLOCK_TYPES.add(BlockTypes.TABURET);
         MISSING_BLOCK_TYPES.add(BlockTypes.BOOKCASE);
-        MISSING_BLOCK_TYPES.add(BlockTypes.CRATE_CHARM);
+        MISSING_BLOCK_TYPES.add(BlockTypes.CRATE_CHARM);*/
     }
 
     public String missingBlockTypesToString(){

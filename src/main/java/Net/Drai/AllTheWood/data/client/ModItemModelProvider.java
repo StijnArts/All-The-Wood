@@ -14,13 +14,12 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         withExistingParent("test_block", modLoc("block/test_block"));
-
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
 
-        builder(itemGenerated, "silver_ingot");
+        //builder(itemGenerated, "test_block");
     }
 
     private void builder(ModelFile itemGenerated, String name) {
-        getBuilder(name).parent(itemGenerated).texture("layer:0", "item/"+name);
+        //getBuilder(name).parent(itemGenerated).texture("layer:0", "item/"+name);
     }
 }

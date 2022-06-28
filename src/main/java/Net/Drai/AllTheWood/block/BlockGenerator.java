@@ -20,6 +20,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.*;
 //import someoneelse.betternetherreforged.blocks.*;
 
 import java.util.*;
@@ -65,7 +66,7 @@ public class BlockGenerator {
                         cutout = createBlock("" + material.getName() + "_" + name,
                                 () -> new BNNormalChair(new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper())))
                                 , itemGroup);
-                    } else if (missingBlockType == BlockTypes.PLANKS) {
+                    } else if (missingBlockType.isInGroup(Group.BLOCKS)) {
                         solid = createBlock("" + material.getName() + "_" + name,
                                 () -> new Block(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
                                 , itemGroup);

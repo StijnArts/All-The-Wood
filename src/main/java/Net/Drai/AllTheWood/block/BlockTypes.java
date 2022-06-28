@@ -1,8 +1,8 @@
 package Net.Drai.AllTheWood.block;
 
 public enum BlockTypes {
-    //Full Blocks
-
+    //TODO Add proper groups
+/*
     BARS, //PaneBlock
     BARS_CROSSED, //PaneBlock Render Type:Cutout
     BARS_HORIZONTAL, //HorizontalBarsSlabBlock
@@ -11,35 +11,35 @@ public enum BlockTypes {
     CHAIR, //BNNormalChair
     TABURET, //BNTaburet
     BOOKCASE, //Bookcases
-    CRATE_CHARM, //CrateBlockEntity
-    PLANKS_CHIPPED_1,
-    PLANKS_CHIPPED_2,
-    PLANKS_CHIPPED_3,
-    PLANKS_CHIPPED_4,
-    PLANKS_CHIPPED_5,
-    PLANKS_CHIPPED_6,
-    PLANKS_CHIPPED_7,
-    PLANKS_CHIPPED_8,
-    PLANKS_CHIPPED_9,
-    PLANKS_CHIPPED_10,
-    PLANKS_CHIPPED_11,
-    PLANKS_CHIPPED_12,
-    PLANKS_CHIPPED_13,
-    PLANKS_CHIPPED_14,
-    PLANKS_CHIPPED_15,
-    PLANKS_CHIPPED_16,
-    PLANKS_CHIPPED_17,
-    PLANKS_CHIPPED_18,
-    SAWMILL,
+    CRATE_CHARM, //CrateBlockEntity */
+    PLANKS_CHIPPED_1 (Group.BLOCKS),
+    PLANKS_CHIPPED_2 (Group.BLOCKS),
+    PLANKS_CHIPPED_3 (Group.BLOCKS),
+    PLANKS_CHIPPED_4 (Group.BLOCKS),
+    PLANKS_CHIPPED_5 (Group.BLOCKS),
+    PLANKS_CHIPPED_6 (Group.BLOCKS),
+    PLANKS_CHIPPED_7 (Group.BLOCKS),
+    PLANKS_CHIPPED_8 (Group.BLOCKS),
+    PLANKS_CHIPPED_9 (Group.BLOCKS),
+    PLANKS_CHIPPED_10 (Group.BLOCKS),
+    PLANKS_CHIPPED_11 (Group.BLOCKS),
+    PLANKS_CHIPPED_12 (Group.BLOCKS),
+    PLANKS_CHIPPED_13 (Group.BLOCKS),
+    PLANKS_CHIPPED_14 (Group.BLOCKS),
+    PLANKS_CHIPPED_15 (Group.BLOCKS),
+    PLANKS_CHIPPED_16 (Group.BLOCKS),
+    PLANKS_CHIPPED_17 (Group.BLOCKS),
+    PLANKS_CHIPPED_18 (Group.BLOCKS),
+    /*SAWMILL,
     WINDOW_CREATE,
-    WINDOW_PANE_CREATE,
-    BEAM,
-    LATTICE,
-    PALISADE,
-    SEAT,
-    SUPPORT,
-    PARQUET,
-    PARQUET_SLAB,
+    WINDOW_PANE_CREATE,*/
+    BEAM (Group.AXIS_BLOCKS),
+    //LATTICE,
+    //PALISADE,
+    //SEAT,
+    //SUPPORT,
+    PARQUET (Group.BLOCKS),
+    /*PARQUET_SLAB,
     PARQUET_STAIRS,
     WOOD_CARVED,
     BOAT_WITH_CHEST,
@@ -95,9 +95,9 @@ public enum BlockTypes {
     SUSPENSION,
     SUSPENSION_TOP,
     TRESSEL,
-    TRESSEL_TOP,
-    PLANKS_VERTICAL,
-    POST,
+    TRESSEL_TOP,*/
+    PLANKS_VERTICAL (Group.BLOCKS),
+    /*POST,
     POST_STRIPPED,
     SLAB_VERTICAL,
     ITEM_SHELF,
@@ -118,17 +118,34 @@ public enum BlockTypes {
     FENCE_GATE,
     LADDER,
     LOG, //AxisBlock
-    LOG_STRIPPED,
-    PLANKS,
-    PRESSURE_PLATE,
+    LOG_STRIPPED,*/
+    PLANKS  (Group.BLOCKS),
+    /*PRESSURE_PLATE,
     SIGN,
     SLAB,
     STAIRS,
     TRAP_DOOR,
-    WALL,
-    WOOD,
-    WOOD_STRIPPED,
-    GARDEN_PLANKS,
-    PARQUET_SLAB_VERTICAL,
-    DOOR_TALL
+    WALL,*/
+    WOOD  (Group.BLOCKS),
+    WOOD_STRIPPED  (Group.BLOCKS);
+    //GARDEN_PLANKS,
+    //PARQUET_SLAB_VERTICAL,
+    //DOOR_TALL;
+
+    private Group group;
+
+    BlockTypes(Group group){
+        this.group = group;
+    }
+
+    public boolean isInGroup(Group group){
+        return this.group==group;
+    }
+    public Group getGroup(){
+        return this.group;
+    }
+    public enum Group {
+            BLOCKS,
+            AXIS_BLOCKS;
+    }
 }

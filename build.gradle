@@ -36,7 +36,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                all_the_wood {
                     source sourceSets.main
                 }
             }
@@ -49,7 +49,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                all_the_wood {
                     source sourceSets.main
                 }
             }
@@ -62,10 +62,10 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'all_the_wood', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                all_the_wood {
                     source sourceSets.main
                 }
             }
@@ -88,6 +88,9 @@ repositories       {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
+    //DataGen examples
+    implementation fg.deobf("curse.maven:datagen-297039:3386805")
+
     //New blocks Mods
         //Additional Bars
         //implementation fg.deobf("curse.maven:additionalbars-357362:3290973")
@@ -180,7 +183,7 @@ dependencies {
         //Better End Forge
         //implementation fg.deobf("curse.maven:betterendforge-537247:3523090")
         //Better Nether Reforged
-        //implementation fg.deobf("curse.maven:betternetherreforged-526921:3513533")
+        implementation fg.deobf("curse.maven:betternetherreforged-526921:3513533")
         //Natural Decor Mod
         //implementation fg.deobf("curse.maven:naturaldecormod-375573:3620069")
 
@@ -192,7 +195,7 @@ dependencies {
         //Placebo
         //implementation fg.deobf('curse.maven:placebo-283644:3750838')
         //Selene
-        //implementation fg.deobf('curse.maven:selene-499980:3517008')
+        implementation fg.deobf('curse.maven:selene-499980:3517008')
         //Abnormals Core
         //implementation fg.deobf("curse.maven:blueprint-382216:3607198")
 
@@ -211,12 +214,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title": "examplemod",
-                "Specification-Vendor": "examplemodsareus",
+                "Specification-Title": "all_the_wood",
+                "Specification-Vendor": "all_the_woodsareus",
                 "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"examplemodsareus",
+                "Implementation-Vendor" :"all_the_woodsareus",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

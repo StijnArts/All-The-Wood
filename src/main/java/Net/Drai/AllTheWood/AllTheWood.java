@@ -2,6 +2,7 @@ package Net.Drai.AllTheWood;
 
 import Net.Drai.AllTheWood.block.*;
 import Net.Drai.AllTheWood.material.*;
+import Net.Drai.AllTheWood.misc.*;
 import Net.Drai.AllTheWood.modules.*;
 import net.minecraft.block.*;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,10 +39,10 @@ public class AllTheWood {
 
         // Register the setup method for modloading
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        BLOCKS_REGISTRY.register(bus);
-        ITEMS_REGISTRY.register(bus);
         registerModules();
         registerGenerateBlocks();
+        BLOCKS_REGISTRY.register(bus);
+        ITEMS_REGISTRY.register(bus);
         modulesToString();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
