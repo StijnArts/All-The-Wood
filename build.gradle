@@ -170,8 +170,6 @@ dependencies {
             implementation fg.deobf("curse.maven:pollen-544350:3841209")
         //Mystic's Biomes
         implementation fg.deobf("curse.maven:mysticsbiomes-397962:3337692")*/
-        //Pam's Harvestcraft 2 Fruit Trees
-        //implementation fg.deobf("curse.maven:pamsfruittrees-365460:3281234")
         /*//Pixelmon
         //implementation fg.deobf('curse.maven:pixelmon-389487:3825618')
         //Upgrade Aquatic
@@ -198,13 +196,15 @@ dependencies {
         implementation fg.deobf('curse.maven:selene-499980:3517008')
         //Abnormals Core
         //implementation fg.deobf("curse.maven:blueprint-382216:3607198")
+    //Silent Lib
+    implementation fg.deobf('curse.maven:siletnlib-242998:3235738')
 
     //JEI
     //implementation fg.deobf("curse.maven:jei-238222:3681294")
     //implementation fg.deobf("curse.maven:jeii-265917:3808959")
     //implementation fg.deobf("curse.maven:jer-240630:3435305")
     //Polymorph
-    //implementation fg.deobf('curse.maven:polymorph-388800:3668318')
+    implementation fg.deobf('curse.maven:polymorph-388800:3668318')
 
     //Absent By Design
     //implementation fg.deobf('curse.maven:absentbydesign-305840:3656662')

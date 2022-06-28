@@ -9,6 +9,7 @@ import net.minecraftforge.common.*;
 import java.util.*;
 
 public class ATWMaterial {
+
     private String name;
     private MaterialColor materialColor;
     public ArrayList<BlockTypes> MISSING_BLOCK_TYPES;
@@ -19,13 +20,13 @@ public class ATWMaterial {
     private float strengthUpper;
     private SoundType soundType;
     private Block baseBlock;
-
-
-
+    private String modId;
     private ItemGroup itemGroup;
-    public ATWMaterial(String name, MaterialColor materialColor, Material material, int harvestLevel, ToolType toolType,
+
+    public ATWMaterial(String modId, String name, MaterialColor materialColor, Material material, int harvestLevel, ToolType toolType,
                        float strengthLower, float strengthUpper, SoundType soundType, ItemGroup defaultItemgroup,
                        ArrayList<BlockTypes> missing_block_types){
+        this.modId = modId;
         this.name = name;
         this.material = material;
         this.harvestLevel = harvestLevel;
@@ -41,9 +42,11 @@ public class ATWMaterial {
     public String getName(){
         return name;
     }
+
     public MaterialColor getMaterialColor(){
         return materialColor;
     }
+
     public BlockState getBlockState(){
         return baseBlock.getBlock().defaultBlockState();
     }
@@ -51,6 +54,7 @@ public class ATWMaterial {
     public int getHarvestLevel() {
         return harvestLevel;
     }
+
     public Material getMaterial() {
         return material;
     }
@@ -65,6 +69,10 @@ public class ATWMaterial {
 
     public float getStrengthUpper() {
         return strengthUpper;
+    }
+
+    public String getModId() {
+        return modId;
     }
 
     public SoundType getSoundType() {

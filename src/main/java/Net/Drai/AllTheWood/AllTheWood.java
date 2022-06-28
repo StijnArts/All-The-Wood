@@ -27,7 +27,6 @@ import static java.util.Objects.isNull;
 public class AllTheWood {
     public static final String MOD_ID = "all_the_wood";
     public static final Logger LOGGER = LogManager.getLogger();
-
     public static final DeferredRegister<Block> BLOCKS_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, AllTheWood.MOD_ID);
     public static final LinkedHashMap<BlockTypes, BlockType> BLOCK_TYPES = new LinkedHashMap<>();
     public static final DeferredRegister<Item> ITEMS_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, AllTheWood.MOD_ID);
@@ -40,10 +39,11 @@ public class AllTheWood {
         // Register the setup method for modloading
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         registerModules();
+        modulesToString();
         registerGenerateBlocks();
         BLOCKS_REGISTRY.register(bus);
         ITEMS_REGISTRY.register(bus);
-        modulesToString();
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -62,9 +62,9 @@ public class AllTheWood {
             for (ATWMaterial material : module.getMATERIALS()) {
                 LOGGER.info("-: " + material.getName());
             }
-            LOGGER.info("New BlockTypes Added by" + module.getModId() + ":");
+            LOGGER.info(module.getBLOCK_TYPES().size()+ " New BlockTypes Added by " + module.getModId() + ":");
             for (BlockType blocktype : module.getBLOCK_TYPES()) {
-                LOGGER.info("-: " + BlockType.getName());
+                LOGGER.info("-: " + blocktype.getName());
             }
         }
     }

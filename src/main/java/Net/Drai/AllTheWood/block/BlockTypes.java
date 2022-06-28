@@ -2,7 +2,6 @@ package Net.Drai.AllTheWood.block;
 
 public enum BlockTypes {
     //TODO Add proper groups
-/*
     BARS, //PaneBlock
     BARS_CROSSED, //PaneBlock Render Type:Cutout
     BARS_HORIZONTAL, //HorizontalBarsSlabBlock
@@ -30,16 +29,16 @@ public enum BlockTypes {
     PLANKS_CHIPPED_16 (Group.BLOCKS),
     PLANKS_CHIPPED_17 (Group.BLOCKS),
     PLANKS_CHIPPED_18 (Group.BLOCKS),
-    /*SAWMILL,
+    SAWMILL,
     WINDOW_CREATE,
-    WINDOW_PANE_CREATE,*/
+    WINDOW_PANE_CREATE,
     BEAM (Group.AXIS_BLOCKS),
-    //LATTICE,
-    //PALISADE,
-    //SEAT,
-    //SUPPORT,
+    LATTICE,
+    PALISADE,
+    SEAT,
+    SUPPORT,
     PARQUET (Group.BLOCKS),
-    /*PARQUET_SLAB,
+    PARQUET_SLAB (Group.SLABS),
     PARQUET_STAIRS,
     WOOD_CARVED,
     BOAT_WITH_CHEST,
@@ -95,9 +94,9 @@ public enum BlockTypes {
     SUSPENSION,
     SUSPENSION_TOP,
     TRESSEL,
-    TRESSEL_TOP,*/
+    TRESSEL_TOP,
     PLANKS_VERTICAL (Group.BLOCKS),
-    /*POST,
+    POST,
     POST_STRIPPED,
     SLAB_VERTICAL,
     ITEM_SHELF,
@@ -117,25 +116,28 @@ public enum BlockTypes {
     FENCE,
     FENCE_GATE,
     LADDER,
-    LOG, //AxisBlock
-    LOG_STRIPPED,*/
-    PLANKS  (Group.BLOCKS),
-    /*PRESSURE_PLATE,
+    LOG (Group.AXIS_BLOCKS),
+    STRIPPED_LOG,
+    PLANKS (Group.BLOCKS),
+    PRESSURE_PLATE,
     SIGN,
     SLAB,
     STAIRS,
     TRAP_DOOR,
-    WALL,*/
+    WALL,
     WOOD  (Group.BLOCKS),
-    WOOD_STRIPPED  (Group.BLOCKS);
-    //GARDEN_PLANKS,
-    //PARQUET_SLAB_VERTICAL,
-    //DOOR_TALL;
+    STRIPPED_WOOD(Group.BLOCKS),
+    GARDEN_PLANKS,
+    PARQUET_SLAB_VERTICAL,
+    DOOR_TALL;
 
     private Group group;
 
     BlockTypes(Group group){
         this.group = group;
+    }
+    BlockTypes(){
+        this(Group.NO_GROUP);
     }
 
     public boolean isInGroup(Group group){
@@ -145,7 +147,12 @@ public enum BlockTypes {
         return this.group;
     }
     public enum Group {
-            BLOCKS,
-            AXIS_BLOCKS;
+        NO_GROUP,
+        BLOCKS, //Implemented
+        AXIS_BLOCKS,
+        SLABS,
+        STAIRS,
+        FENCES,
+        FENCE_GATES;
     }
 }

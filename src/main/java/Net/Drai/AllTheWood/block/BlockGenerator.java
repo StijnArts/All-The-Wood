@@ -33,9 +33,8 @@ public class BlockGenerator {
                 () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
                 , ItemGroup.TAB_FOOD);
             for (ATWMaterial material : module.getMATERIALS()) {
-
                 for(BlockTypes missingBlockType: material.MISSING_BLOCK_TYPES){
-                    String name = missingBlockType.name().toLowerCase(Locale.ROOT);
+                    String name = AllTheWood.BLOCK_TYPES.get(missingBlockType).getName();
                     ItemGroup itemGroup;
                     if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup() != null){
                         itemGroup= AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup();
@@ -66,17 +65,17 @@ public class BlockGenerator {
                         cutout = createBlock("" + material.getName() + "_" + name,
                                 () -> new BNNormalChair(new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper())))
                                 , itemGroup);
-                    } else if (missingBlockType.isInGroup(Group.BLOCKS)) {
+                    } else */if (missingBlockType.isInGroup(BlockTypes.Group.BLOCKS)) {
                         solid = createBlock("" + material.getName() + "_" + name,
                                 () -> new Block(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
                                 , itemGroup);
 
-                    } else if (missingBlockType == BlockTypes.SLAB || missingBlockType == BlockTypes.PARQUET_SLAB){
+                    } else if (missingBlockType.isInGroup(BlockTypes.Group.SLABS)){
                         cutout = createBlock("" + material.getName() + "_" + name,
                                 () -> new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
                                 , itemGroup);
 
-                    } else if (missingBlockType == BlockTypes.STAIRS || missingBlockType == BlockTypes.PARQUET_STAIRS){
+                    } else if (missingBlockType.isInGroup(BlockTypes.Group.STAIRS)){
                         cutout = createBlock("" + material.getName() + "_" + name,
                                 () -> new StairsBlock(() -> material.getBlockState(), AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
                                 , itemGroup);
@@ -90,7 +89,7 @@ public class BlockGenerator {
                         cutout = createBlock("" + material.getName() + "_" + name,
                                 () -> new FenceGateBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
                                 , itemGroup);
-                    }*/
+                    }
                 }
             }
     }

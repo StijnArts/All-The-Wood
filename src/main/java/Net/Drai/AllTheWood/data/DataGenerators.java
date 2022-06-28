@@ -16,7 +16,10 @@ public final class DataGenerators {
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        gen.addProvider(new ModBlockStateProvider(gen, existingFileHelper));
-        gen.addProvider(new ModItemModelProvider(gen, existingFileHelper));
+        gen.addProvider(new ATWBlockStateProvider(gen, existingFileHelper));
+        gen.addProvider(new ATWItemModelProvider(gen, existingFileHelper));
+        gen.addProvider(new ATWRecipeProvider(gen));
+        gen.addProvider(new ATWLootTableProvider(gen));
+        gen.addProvider(new ATWLanguageProvider(gen));
     }
 }

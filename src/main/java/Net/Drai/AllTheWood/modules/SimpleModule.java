@@ -11,10 +11,7 @@ public abstract class SimpleModule {
 
     private String modId;
     private ArrayList<ATWMaterial> MATERIALS = new ArrayList<>();
-
-
-
-    private ArrayList<BlockType> BLOCK_TYPES = new ArrayList<>();
+    private ArrayList<BlockType> BLOCK_TYPES;
     public SimpleModule(String modId){
         this.MATERIALS = MATERIALS;
         this.modId = modId;
