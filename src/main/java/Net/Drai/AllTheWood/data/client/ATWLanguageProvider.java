@@ -1,7 +1,7 @@
 package Net.Drai.AllTheWood.data.client;
 
 import Net.Drai.AllTheWood.*;
-import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
 import Net.Drai.AllTheWood.modules.*;
 import net.minecraft.block.*;
@@ -25,16 +25,22 @@ public class ATWLanguageProvider extends LanguageProvider {
             for (ATWMaterial material : module.getMATERIALS()) {
                 LOGGER.info("material: " + material.getName());
                 for (BlockTypes missingBlockType : material.MISSING_BLOCK_TYPES) {
-                    for (RegistryObject<Block> block : AllTheWood.BLOCKS_REGISTRY.getEntries()) {
+                    for (RegistryObject<Block> block : module.BLOCKS_REGISTRY.getEntries()) {
                         String testLocation = "test_block";
                         LOGGER.info("RegistryObject location: "+block.getId().toString());
-                        String primaryLocation = "all_the_wood:"+material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
+                        String primaryLocation = module.getModId()+":"+material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
+                        if(missingBlockType == BlockTypes.STRIPPED_LOG){
+                            primaryLocation = module.getModId()+":stripped_"+material.getName()+"_log";
+                        } else if(missingBlockType == BlockTypes.STRIPPED_WOOD){
+                            primaryLocation = module.getModId()+":stripped_"+material.getName()+"_wood";
+                        }
                         LOGGER.info("Primary location: " + primaryLocation);
                         LOGGER.info("Test location: " + testLocation);
-                        boolean isInPrimaryLocation = block.getId().equals(AllTheWood.MOD_ID+":"+primaryLocation);
+                        boolean isInPrimaryLocation = block.getId().toString().equals(primaryLocation);
                         if(isInPrimaryLocation) {
                             LOGGER.info("Match Found.");
-                            String name = material.getName() + " " + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName();
+                            String name = material.getName() + " " + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().replaceAll("_", " ");
+                            LOGGER.info(name);
                             if(missingBlockType == BlockTypes.STRIPPED_WOOD){
                                     name = "stripped "+material.getName()+" wood";
                             } else if(missingBlockType == BlockTypes.STRIPPED_LOG){

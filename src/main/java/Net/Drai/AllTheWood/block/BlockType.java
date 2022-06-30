@@ -1,14 +1,28 @@
 package Net.Drai.AllTheWood.block;
 
 import Net.Drai.AllTheWood.*;
+import Net.Drai.AllTheWood.block.enums.*;
+import Net.Drai.AllTheWood.tileentitites.*;
+import net.minecraft.block.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.fluid.*;
 import net.minecraft.item.*;
+import net.minecraft.network.play.server.*;
+import net.minecraft.state.*;
+import net.minecraft.state.properties.*;
+import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.shapes.*;
+import net.minecraft.world.*;
 
+import javax.annotation.*;
 import java.util.*;
 
 public class BlockType {
-    private static String name;
+    private String name;
     private BlockTypes blockType;
     private ATWRecipeTypes recipeType;
     private int quantityOut;
@@ -66,7 +80,7 @@ public class BlockType {
         return quantityOut;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 }

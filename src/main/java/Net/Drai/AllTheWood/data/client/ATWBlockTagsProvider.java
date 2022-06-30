@@ -2,6 +2,7 @@ package Net.Drai.AllTheWood.data.client;
 
 import Net.Drai.AllTheWood.*;
 import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
 import Net.Drai.AllTheWood.modules.*;
 import net.minecraft.block.*;
@@ -26,7 +27,7 @@ public class ATWBlockTagsProvider extends BlockTagsProvider {
             for (ATWMaterial material : module.getMATERIALS()) {
                 LOGGER.info("material: " + material.getName());
                 for (BlockTypes missingBlockType : material.MISSING_BLOCK_TYPES) {
-                    for (RegistryObject<Block> block : AllTheWood.BLOCKS_REGISTRY.getEntries()) {
+                    for (RegistryObject<Block> block : module.BLOCKS_REGISTRY.getEntries()) {
                         String testLocation = "test_block";
                         String primaryLocation = material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
                         LOGGER.info("Primary location: " + primaryLocation);

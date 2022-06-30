@@ -62,7 +62,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'all_the_wood', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'all_the_wood', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing', file('...')
 
             mods {
                 all_the_wood {
@@ -152,16 +152,16 @@ dependencies {
         //implementation fg.deobf('curse.maven:verylush-401546:3320560')
 
     //New Wood Types
-        /*//Abundance
+        //Abundance
         implementation fg.deobf("curse.maven:abundance-452345:3250108")
         //Architects Palette
-        implementation fg.deobf("curse.maven:architectspalette-433862:3619985")
+        //implementation fg.deobf("curse.maven:architectspalette-433862:3619985")
         //Better Default Biomes
         //implementation fg.deobf("curse.maven:betterdefaultbiomes-379768:3470945")
         //Better Badlands
-        implementation fg.deobf("curse.maven:betterbadlands-421763:3195284")
+        //implementation fg.deobf("curse.maven:betterbadlands-421763:3195284")
         //Betterlands
-        implementation fg.deobf("curse.maven:betterlands-482870:3311357")*/
+        //implementation fg.deobf("curse.maven:betterlands-482870:3311357")
         //Biomes O' Plenty
         //implementation fg.deobf("curse.maven:bop-220318:3823991")
         /*//Enhanced Mushrooms
@@ -179,7 +179,7 @@ dependencies {
         */
     //Both
         //Better End Forge
-        //implementation fg.deobf("curse.maven:betterendforge-537247:3523090")
+        implementation fg.deobf("curse.maven:betterendforge-537247:3523090")
         //Better Nether Reforged
         implementation fg.deobf("curse.maven:betternetherreforged-526921:3513533")
         //Natural Decor Mod
@@ -195,7 +195,7 @@ dependencies {
         //Selene
         implementation fg.deobf('curse.maven:selene-499980:3517008')
         //Abnormals Core
-        //implementation fg.deobf("curse.maven:blueprint-382216:3607198")
+        implementation fg.deobf("curse.maven:blueprint-382216:3607198")
     //Silent Lib
     implementation fg.deobf('curse.maven:siletnlib-242998:3235738')
 

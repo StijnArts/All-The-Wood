@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "all_the_wood:test_block"
+          "name": "minecraft:oak_sign"
         }
       ],
       "conditions": [

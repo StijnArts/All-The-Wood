@@ -15,11 +15,12 @@ public final class DataGenerators {
     public static void gatherData(GatherDataEvent event){
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-
-        gen.addProvider(new ATWBlockStateProvider(gen, existingFileHelper));
-        gen.addProvider(new ATWItemModelProvider(gen, existingFileHelper));
-        gen.addProvider(new ATWRecipeProvider(gen));
-        gen.addProvider(new ATWLootTableProvider(gen));
-        gen.addProvider(new ATWLanguageProvider(gen));
+        if (event.includeClient()) {
+            gen.addProvider(new ATWBlockStateProvider(gen, existingFileHelper));
+            gen.addProvider(new ATWItemModelProvider(gen, existingFileHelper));
+            gen.addProvider(new ATWRecipeProvider(gen));
+            gen.addProvider(new ATWLootTableProvider(gen));
+            gen.addProvider(new ATWLanguageProvider(gen));
+        }
     }
 }

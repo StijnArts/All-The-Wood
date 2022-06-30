@@ -1,6 +1,6 @@
 package Net.Drai.AllTheWood.material;
 
-import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.enums.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.item.*;

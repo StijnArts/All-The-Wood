@@ -1,12 +1,14 @@
 package Net.Drai.AllTheWood.data.client;
 
 import Net.Drai.AllTheWood.*;
-import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
 import Net.Drai.AllTheWood.modules.*;
 import net.minecraft.data.*;
 import net.minecraft.item.*;
+import net.minecraft.tags.*;
 import net.minecraft.util.*;
+import net.minecraftforge.common.*;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.*;
 
@@ -24,9 +26,9 @@ public class ATWRecipeProvider extends RecipeProvider {
         LOGGER.info("buildShapelessRecipes method Called.");
         for (SimpleModule module : AllTheWood.MODULES) {
             LOGGER.info("module: " + module.getModId());
+            modId = module.getModId();
             for (ATWMaterial material : module.getMATERIALS()) {
                 LOGGER.info("material: " + material.getName());
-
                 for (BlockTypes missingBlockType : material.MISSING_BLOCK_TYPES) {
                     LOGGER.info("missingBlockType: " + missingBlockType.name());
                     LOGGER.info(missingBlockType.getGroup().name());
@@ -38,17 +40,22 @@ public class ATWRecipeProvider extends RecipeProvider {
                         String name = missingBlockType.name().toLowerCase(Locale.ROOT);
                         ResourceLocation input = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(0).name().toLowerCase(Locale.ROOT));
                         LOGGER.info("Input item: "+input);
-                        String output = material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT);
+                        ResourceLocation output = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
                         LOGGER.info("Recipe output will be: "+output);
                         LOGGER.info("missingBlockType recipe was a " + recipe.name().toLowerCase(Locale.ROOT)+" recipe.");
                         if (recipe == ATWRecipeTypes.TWOBYTWO) {
+                            if(missingBlockType == BlockTypes.STRIPPED_WOOD){
+                                output = new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_wood");
+                                input =new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_log");
+                            }
                             make2By2Recipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-//TODO change from "Testblock" to output
                         } else if(recipe == ATWRecipeTypes.SINGLE_INPUT_SHAPELESS){
+                            LOGGER.info(ATWRecipeTypes.SINGLE_INPUT_SHAPELESS+" Found.");
                             if(missingBlockType == BlockTypes.PLANKS){
                                 LOGGER.info(missingBlockType + " found.");
                                 LOGGER.info("Amount of input items: "+ AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.size());
                                 for(BlockTypes inputBlockType :AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput){
+                                    LOGGER.info(missingBlockType.getGroup().name()+" Found.");
                                     LOGGER.info("Input Item Found.");
                                     input = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(0).name().toLowerCase(Locale.ROOT));
                                     if(inputBlockType == BlockTypes.WOOD){
@@ -67,64 +74,111 @@ public class ATWRecipeProvider extends RecipeProvider {
                                         input = new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_log");
                                     }
                                     LOGGER.info("Plank input: "+input);
-                                    makeShapelessRecipe(input,output,AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(),4,consumer);
+                                    makeShapelessRecipe(input,output,AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(),consumer);
                                 }
                             }
-                        } else if(missingBlockType.isInGroup(BlockTypes.Group.SLABS)){
+                        } else if(recipe == ATWRecipeTypes.SLAB){
+                            LOGGER.info(ATWRecipeTypes.SLAB+" Found.");
                             makeSlabRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-                        } else if(missingBlockType.isInGroup(BlockTypes.Group.STAIRS)){
+                        } else if(recipe == ATWRecipeTypes.STAIRS){
+                            LOGGER.info(ATWRecipeTypes.STAIRS+" Found.");
                             makeStairsRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-                        } else if(missingBlockType.isInGroup(BlockTypes.Group.FENCES)){
+                        } else if(recipe == ATWRecipeTypes.FENCE){
+                            LOGGER.info(ATWRecipeTypes.FENCE+" Found.");
                             makeFenceRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-                        } else if(missingBlockType.isInGroup(BlockTypes.Group.FENCE_GATES)){
-                            LOGGER.info("Fence Gate Found.");
+                        } else if(recipe == ATWRecipeTypes.FENCE_GATE){
+                            LOGGER.info(ATWRecipeTypes.FENCE_GATE+" Found.");
                             makeFenceGateRecipe(input, output, consumer);
+                        } else if(recipe == ATWRecipeTypes.VERTICAL_LINE){
+                            LOGGER.info(ATWRecipeTypes.VERTICAL_LINE+" Found.");
+                            if(missingBlockType == BlockTypes.STRIPPED_LOG){
+                                LOGGER.info("input modified for stripped variant.");
+                                output = new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_log");
+                                input =new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_wood");
+                            }
+                            makeVerticalLineRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                        } else if(recipe == ATWRecipeTypes.LADDER){
+                            LOGGER.info(recipe+" Found.");
+                            if(material.getModId() == "minecraft" && material.getName() == "oak"){
+                                output = new ResourceLocation(material.getModId(), AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
+                                LOGGER.info("output :"+output);
+                            }
+                            makeLadderRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                        } else if(recipe == ATWRecipeTypes.PRESSURE_PLATE){
+                            LOGGER.info(recipe+" Found.");
+                            makePressurePlateRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                        } else if(recipe == ATWRecipeTypes.SIGN){
+                            LOGGER.info(recipe+" Found.");
+
+                            makeSignRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
                         }
                     } else if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getRecipeType().isInGroup(ATWRecipeTypes.Group.TWO_INPUT)){
-
                     }
                 }
             }
         }
     }
 
-    private void makeFenceGateRecipe(ResourceLocation input, String output, Consumer<IFinishedRecipe> consumer) {
+    private void makeSignRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        //logParameters(input, output, outputQuanity, consumer);
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
-        ShapedRecipeBuilder.shaped(result).pattern("I#I").pattern("I#I").define('#', ingredient).define('I', Items.STICK).group("betternether").unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("###").pattern("###").pattern(" I ").define('#', ingredient).define('I', Items.STICK).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
     }
 
-    public static void makeShapelessRecipe(ResourceLocation input, String output, int outputQuanity, int inputQuanity, Consumer<IFinishedRecipe> consumer){
+    private void makePressurePlateRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer) {
+        //logParameters(input, output, outputQuanity, consumer);
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
-        ShapelessRecipeBuilder.shapeless(result, outputQuanity).requires(ingredient, inputQuanity).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("##").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
     }
 
-    public static void makeSlabRecipe(ResourceLocation input, String output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+    private void makeVerticalLineRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer) {
+        //logParameters(input, output, outputQuanity, consumer);
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("#").pattern("#").pattern("#").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
+    }
+
+    private void makeLadderRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer) {
+        IItemProvider ingredient = getRegisteredItem(input);
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("I I").pattern("I#I").pattern("I I").define('#', ingredient).define('I', Items.STICK).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
+    }
+
+    private void makeFenceGateRecipe(ResourceLocation input, ResourceLocation output, Consumer<IFinishedRecipe> consumer) {
+        IItemProvider ingredient = getRegisteredItem(input);
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result).pattern("I#I").pattern("I#I").define('#', ingredient).define('I', Items.STICK).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
+    }
+
+    public static void makeShapelessRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        IItemProvider ingredient = getRegisteredItem(input);
+        IItemProvider result = getRegisteredItem(output);
+        ShapelessRecipeBuilder.shapeless(result, outputQuanity).requires(ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
+    }
+
+    public static void makeSlabRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        IItemProvider ingredient = getRegisteredItem(input);
+        IItemProvider result = getRegisteredItem(output);
         ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("###").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
     }
 
-    public static void makeFenceRecipe(ResourceLocation input, String output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+    public static void makeFenceRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
+        IItemProvider result = getRegisteredItem(output);
         ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("#I#").pattern("#I#").define('#', ingredient).define('I', Items.STICK).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
     }
-    public static void make2By2Recipe(ResourceLocation input, String output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+    public static void make2By2Recipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
+        IItemProvider result = getRegisteredItem(output);
         ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("##").pattern("##").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
     }
 
-    public static void makeStairsRecipe(ResourceLocation input, String output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+    public static void makeStairsRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
         IItemProvider ingredient = getRegisteredItem(input);
-        IItemProvider result = getRegisteredItem(modLoc(output));
+        IItemProvider result = getRegisteredItem(output);
         ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("#  ").pattern("## ").pattern("###").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result)+"_from_"+getPath(ingredient));
-    }
-
-    private static ResourceLocation modLoc(String name){
-        return new ResourceLocation(modId,name);
     }
 
     private static IItemProvider getRegisteredItem(ResourceLocation loc) {
@@ -132,5 +186,11 @@ public class ATWRecipeProvider extends RecipeProvider {
     }
     private static String getPath(IItemProvider item) {
         return item.asItem().getRegistryName().getPath();
+    }
+
+    private static void logParameters(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        LOGGER.info("Input: "+input);
+        LOGGER.info("Output: "+output);
+        LOGGER.info("Output Quanity: "+outputQuanity);
     }
 }

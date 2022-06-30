@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "all_the_wood:oak_fence_gate"
+          "name": "minecraft:oak_sign"
         }
       ],
       "conditions": [

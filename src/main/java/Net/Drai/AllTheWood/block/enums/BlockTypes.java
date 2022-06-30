@@ -1,4 +1,4 @@
-package Net.Drai.AllTheWood.block;
+package Net.Drai.AllTheWood.block.enums;
 
 public enum BlockTypes {
     //TODO Add proper groups
@@ -113,20 +113,20 @@ public enum BlockTypes {
     COMPOSTER,
     CRAFTING_TABLE,
     DOOR,
-    FENCE,
-    FENCE_GATE,
+    FENCE (Group.FENCES),
+    FENCE_GATE (Group.FENCE_GATES),
     LADDER,
     LOG (Group.AXIS_BLOCKS),
-    STRIPPED_LOG,
+    STRIPPED_LOG (Group.AXIS_BLOCKS),
     PLANKS (Group.BLOCKS),
     PRESSURE_PLATE,
     SIGN,
-    SLAB,
-    STAIRS,
+    SLAB (Group.SLABS),
+    STAIRS (Group.STAIRS),
     TRAP_DOOR,
     WALL,
-    WOOD  (Group.BLOCKS),
-    STRIPPED_WOOD(Group.BLOCKS),
+    WOOD  (Group.AXIS_BLOCKS),
+    STRIPPED_WOOD (Group.AXIS_BLOCKS),
     GARDEN_PLANKS,
     PARQUET_SLAB_VERTICAL,
     DOOR_TALL;

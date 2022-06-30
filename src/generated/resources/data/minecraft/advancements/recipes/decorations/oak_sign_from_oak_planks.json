@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:oak_fence_gate_from_oak_log"
+      "minecraft:oak_sign_from_oak_planks"
     ]
   },
   "criteria": {
-    "oak_log": {
+    "oak_planks": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:oak_log"
+            "item": "minecraft:oak_planks"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:oak_fence_gate_from_oak_log"
+        "recipe": "minecraft:oak_sign_from_oak_planks"
       }
     }
   },
   "requirements": [
     [
-      "oak_log",
+      "oak_planks",
       "has_the_recipe"
     ]
   ]

@@ -1,6 +1,7 @@
 package Net.Drai.AllTheWood.modules;
 
 import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
 
 import java.util.*;

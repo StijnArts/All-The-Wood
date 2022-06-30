@@ -1,18 +1,26 @@
-package Net.Drai.AllTheWood.block;
+package Net.Drai.AllTheWood.block.enums;
 
 public enum ATWRecipeTypes {
-    TWOBYTWO (Group.SINGLE_INPUT),
-    SLAB (Group.SINGLE_INPUT),
-    STAIRS (Group.SINGLE_INPUT),
-    FENCE (Group.SINGLE_INPUT),
-    FENCE_GATE (Group.SINGLE_INPUT),
-    SINGLE_INPUT_SHAPELESS (Group.SINGLE_INPUT),
-    ROUND (Group.SINGLE_INPUT);
+    TWOBYTWO,
+    SLAB,
+    STAIRS,
+    FENCE,
+    FENCE_GATE,
+    SINGLE_INPUT_SHAPELESS,
+    ROUND,
+    LADDER,
+    VERTICAL_LINE,
+    PRESSURE_PLATE,
+    SIGN;
 
     private Group group;
 
     ATWRecipeTypes(Group group){
         this.group = group;
+    }
+
+    ATWRecipeTypes(){
+        this.group = Group.SINGLE_INPUT;
     }
 
     public boolean isInGroup(Group group){
