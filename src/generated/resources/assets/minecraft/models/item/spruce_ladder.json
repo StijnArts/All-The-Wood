@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "minecraft:block/ladder"
+    "layer0": "minecraft:item/spruce_ladder"
   }
 }

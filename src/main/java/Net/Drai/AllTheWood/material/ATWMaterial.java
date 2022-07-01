@@ -9,7 +9,7 @@ import net.minecraftforge.common.*;
 import java.util.*;
 
 public class ATWMaterial {
-
+    public WoodType woodType;
     private String name;
     private MaterialColor materialColor;
     public ArrayList<BlockTypes> MISSING_BLOCK_TYPES;
@@ -24,9 +24,10 @@ public class ATWMaterial {
     private ItemGroup itemGroup;
 
     public ATWMaterial(String modId, String name, MaterialColor materialColor, Material material, int harvestLevel, ToolType toolType,
-                       float strengthLower, float strengthUpper, SoundType soundType, ItemGroup defaultItemgroup,
+                       float strengthLower, float strengthUpper, WoodType woodType,SoundType soundType, ItemGroup defaultItemgroup,
                        ArrayList<BlockTypes> missing_block_types){
         this.modId = modId;
+        this.woodType = woodType;
         this.name = name;
         this.material = material;
         this.harvestLevel = harvestLevel;

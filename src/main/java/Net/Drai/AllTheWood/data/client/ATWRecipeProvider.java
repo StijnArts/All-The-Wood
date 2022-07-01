@@ -37,7 +37,6 @@ public class ATWRecipeProvider extends RecipeProvider {
                     ATWRecipeTypes recipe = AllTheWood.BLOCK_TYPES.get(missingBlockType).getRecipeType();
                     if(recipe.isInGroup(ATWRecipeTypes.Group.SINGLE_INPUT)) {
                         LOGGER.info("missingBlockType recipe was in the " + recipe.getGroup()+" group.");
-                        String name = missingBlockType.name().toLowerCase(Locale.ROOT);
                         ResourceLocation input = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(0).name().toLowerCase(Locale.ROOT));
                         LOGGER.info("Input item: "+input);
                         ResourceLocation output = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
@@ -59,13 +58,13 @@ public class ATWRecipeProvider extends RecipeProvider {
                                     LOGGER.info("Input Item Found.");
                                     input = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(0).name().toLowerCase(Locale.ROOT));
                                     if(inputBlockType == BlockTypes.WOOD){
-                                        if(module.getModId() == "betternetherreforged"|| module.getModId() == "betterendforge"){
+                                        if(Objects.equals(module.getModId(), "betternetherreforged") || Objects.equals(module.getModId(), "betterendforge")){
                                             input = new ResourceLocation(material.getModId(), material.getName()+"_bark");
                                         }else {
                                             input = new ResourceLocation(material.getModId(), material.getName()+"_wood");
                                         }
                                     } else if(inputBlockType == BlockTypes.STRIPPED_WOOD){
-                                        if(module.getModId() == "betternetherreforged"|| module.getModId() == "betterendforge"){
+                                        if(Objects.equals(module.getModId(), "betternetherreforged") || Objects.equals(module.getModId(), "betterendforge")){
                                             input = new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_bark");
                                         } else {
                                             input = new ResourceLocation(material.getModId(), "stripped_"+material.getName()+"_wood");
@@ -99,7 +98,7 @@ public class ATWRecipeProvider extends RecipeProvider {
                             makeVerticalLineRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
                         } else if(recipe == ATWRecipeTypes.LADDER){
                             LOGGER.info(recipe+" Found.");
-                            if(material.getModId() == "minecraft" && material.getName() == "oak"){
+                            if(Objects.equals(material.getModId(), "minecraft") && Objects.equals(material.getName(), "oak")){
                                 output = new ResourceLocation(material.getModId(), AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
                                 LOGGER.info("output :"+output);
                             }
@@ -129,7 +128,7 @@ public class ATWRecipeProvider extends RecipeProvider {
                         LOGGER.info("missingBlockType recipe was a " + recipe.name().toLowerCase(Locale.ROOT)+" recipe.");
                         ResourceLocation input2 = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(1).name().toLowerCase(Locale.ROOT));
                         if (recipe == ATWRecipeTypes.BARREL){
-                            if(material.getModId() == "minecraft" && material.getName() == "oak"){
+                            if(Objects.equals(material.getModId(), "minecraft") && Objects.equals(material.getName(), "oak")){
                                 output = new ResourceLocation(material.getModId(), AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
                                 LOGGER.info("output :"+output);
                             }

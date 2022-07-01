@@ -34,6 +34,7 @@ import static java.util.Objects.isNull;
 public class AllTheWood {
     public static final String MOD_ID = "all_the_wood";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static ArrayList<WoodType> WOOD_TYPES;
     public static final ArrayList<DeferredRegister<TileEntityType<?>>> TILE_ENTITIE_REGISTRY = new ArrayList<>();
     public static final ArrayList<DeferredRegister<Block>> BLOCKS_REGISTRY= new ArrayList<>();
     public static final ArrayList<DeferredRegister<Item>> ITEM_REGISTRY= new ArrayList<>();

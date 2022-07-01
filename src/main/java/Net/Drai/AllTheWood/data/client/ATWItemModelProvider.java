@@ -56,7 +56,7 @@ public class ATWItemModelProvider extends ItemModelProvider {
                                     singleTexture("ladder", mcLoc("item/generated"), "layer0",  new ResourceLocation(material.getModId(),"block/ladder"));
                                 } else {
                                     LOGGER.info("Found non-Oak Ladder");
-                                    singleTexture(material.getName()+"_ladder", mcLoc("item/generated"), "layer0",  new ResourceLocation(material.getModId(),"block/" + material.getName() + "_ladder"));
+                                    singleTexture(material.getName()+"_ladder", mcLoc("item/generated"), "layer0",  new ResourceLocation(material.getModId(),"item/" + material.getName() + "_ladder"));
                                     }
                             } else if(missingBlockType == BlockTypes.SIGN){
                                 singleTexture(material.getName() + "_sign", mcLoc("item/generated"), "layer0", new ResourceLocation(material.getModId(),"item/" + material.getName() + "_sign"));

@@ -8,8 +8,8 @@ import net.minecraft.world.*;
 import javax.annotation.*;
 
 public class ATWStandingSignBlock extends StandingSignBlock {
-    public ATWStandingSignBlock(Properties properties) {
-        super(properties, WoodType.OAK);
+    public ATWStandingSignBlock(Properties properties, WoodType woodType) {
+        super(properties, woodType);
     }
 
     @Nullable

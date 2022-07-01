@@ -21,6 +21,7 @@ public final class DataGenerators {
             gen.addProvider(new ATWRecipeProvider(gen));
             gen.addProvider(new ATWLootTableProvider(gen));
             gen.addProvider(new ATWLanguageProvider(gen));
+            gen.addProvider(new ATWBlockTagsProvider(gen, existingFileHelper));
         }
     }
 }

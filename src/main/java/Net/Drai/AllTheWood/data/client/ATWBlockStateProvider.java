@@ -37,7 +37,7 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                         String testLocation = "test_block";
                         String primaryLocation = material.getModId()+":"+material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
                         if(missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER){
-                            if(module.getModId() == "minecraft" && material.getName() == "oak") {
+                            if(module.getModId().equals("minecraft") && material.getName().equals("oak")) {
                                 primaryLocation = material.getModId() + ":" + missingBlockType.name().toLowerCase(Locale.ROOT);
                             }
                         }

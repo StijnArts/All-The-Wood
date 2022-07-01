@@ -1,5 +1,6 @@
 package Net.Drai.AllTheWood.modules;
 
+import Net.Drai.AllTheWood.*;
 import Net.Drai.AllTheWood.block.*;
 import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
@@ -117,10 +118,12 @@ public class Minecraft extends SimpleModule {
 
     @Override
     public void registerMaterials() {
-        MATERIALS.add(new ATWWood(getModId(),"oak", MaterialColor.WOOD, ItemGroup.TAB_BUILDING_BLOCKS,
-                new ArrayList<>(Arrays.asList(BlockTypes.PRESSURE_PLATE, BlockTypes.LADDER))));
-        MATERIALS.add(new ATWWood(getModId(),"spruce", MaterialColor.WOOD, ItemGroup.TAB_BUILDING_BLOCKS,
-                new ArrayList<>(Arrays.asList(BlockTypes.LADDER))));
+        MATERIALS.add(new ATWWood(getModId(),"oak", MaterialColor.WOOD, WoodType.OAK,ItemGroup.TAB_BUILDING_BLOCKS,
+                new ArrayList<>(Arrays.asList(BlockTypes.PRESSURE_PLATE,BlockTypes.LADDER))));
+        AllTheWood.WOOD_TYPES.add(WoodType.OAK);
+        MATERIALS.add(new ATWWood(getModId(),"spruce", MaterialColor.WOOD, WoodType.SPRUCE, ItemGroup.TAB_BUILDING_BLOCKS,
+                new ArrayList<>(Arrays.asList(BlockTypes.SIGN, BlockTypes.LADDER))));
+        AllTheWood.WOOD_TYPES.add(WoodType.SPRUCE);
     }
 
     public void registerTileEntities(){
