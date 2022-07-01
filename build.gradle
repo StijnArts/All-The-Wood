@@ -103,7 +103,7 @@ dependencies {
         //Campful
         //implementation fg.deobf("curse.maven:campful-429901:3230821")
         //Charm
-        //implementation fg.deobf("curse.maven:charm-318872:3220890")
+        implementation fg.deobf("curse.maven:charm-318872:3220890")
         //Chipped
         //implementation fg.deobf("curse.maven:chipped-456956:3717506")
         //Corail Woodcutter

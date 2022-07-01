@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:oak_sign"
+          "name": "minecraft:oak_pressure_plate"
         }
       ],
       "conditions": [

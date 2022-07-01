@@ -9,5 +9,5 @@ import net.minecraftforge.registries.*;
 
 public class TileEntities {
     public static RegistryObject<TileEntityType<ATWSignTileEntity>> SIGN_TILE_ENTITIES;
-
+    public static RegistryObject<TileEntityType<ATWBarrelTileEntity>> BARREL_TILE_ENTITIES;
 }

@@ -24,6 +24,7 @@ import net.silentchaos512.gear.init.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.rmi.registry.*;
 import java.util.*;
 
 import static java.util.Objects.isNull;
@@ -50,9 +51,9 @@ public class AllTheWood {
 
         modulesToString();
         registerGenerateBlocks();
-        registerTileEntities(bus);
-        registerModItemRegistry(bus);
         registerModBlockRegistry(bus);
+        registerModItemRegistry(bus);
+        registerTileEntities(bus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(logStripper.class);
         MinecraftForge.EVENT_BUS.register(this);
@@ -63,21 +64,46 @@ public class AllTheWood {
 
     void client(FMLClientSetupEvent event) {
         if (!isNull(BlockGenerator.cutout)) {
-            RenderTypeLookup.setRenderLayer(BlockGenerator.cutout.get(), RenderType.cutout());
+            LOGGER.info("Started Cutout render type registration");
+            for (RegistryObject<Block> cutoutBlock : BlockGenerator.cutout){
+                LOGGER.info(cutoutBlock.getId().toString()+" Registered as a cutout render Type.");
+                LOGGER.info(cutoutBlock.get().getDescriptionId()+" Registered as a cutout render Type.");
+                RenderTypeLookup.setRenderLayer(cutoutBlock.get(), RenderType.cutout());
+            }
         }
+        if (!isNull(BlockGenerator.translucent)) {
+            LOGGER.info("Started Translucent render type registration");
+            for (RegistryObject<Block> cutoutBlock : BlockGenerator.translucent){
+                LOGGER.info(cutoutBlock.getId().toString()+" Registered as a translucent render Type.");
+                RenderTypeLookup.setRenderLayer(cutoutBlock.get(), RenderType.translucent());
+            }
+        }
+
         clientRegistryEntities();
     }
 
     void clientRegistryEntities() {
+        Boolean newSignEntitiesAdded = false;
+        Boolean newBarrelEntitiesAdded = false;
         for (SimpleModule module : MODULES) {
-            for (BlockTypes tileEntity : module.TILE_ENTITIES) {
-                if (tileEntity == BlockTypes.SIGN) {
-                    ClientRegistry.bindTileEntityRenderer(TileEntities.SIGN_TILE_ENTITIES.get(),
-                            SignTileEntityRenderer::new);
-                    Atlases.addWoodType(WoodType.OAK);
+            for (ATWMaterial material: module.getMATERIALS()) {
+                for(BlockTypes missingBlockType: material.MISSING_BLOCK_TYPES){
+                    if(missingBlockType == BlockTypes.SIGN){
+                        newSignEntitiesAdded = true;
+                    } else if(missingBlockType == BlockTypes.BARREL){
+                        //newBarrelEntitiesAdded = true;
+                    }
                 }
             }
-
+        }
+        if (newSignEntitiesAdded) {
+            ClientRegistry.bindTileEntityRenderer(TileEntities.SIGN_TILE_ENTITIES.get(),
+                    SignTileEntityRenderer::new);
+            Atlases.addWoodType(WoodType.OAK);
+        } else if (newBarrelEntitiesAdded) {
+            //ClientRegistry.bindTileEntityRenderer(TileEntities.BARREL_TILE_ENTITIES.get(),
+            //        BlockEntityR::new);
+            //Atlases.addWoodType(WoodType.OAK);
         }
     }
 
@@ -110,6 +136,7 @@ public class AllTheWood {
 
     public void registerModItemRegistry(IEventBus bus){
         for (SimpleModule module: MODULES) {
+            LOGGER.info("Registring items for module: "+module.getModId());
             module.ITEM_REGISTRY.register(bus);
         }
     }

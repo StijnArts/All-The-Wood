@@ -109,14 +109,50 @@ public class ATWRecipeProvider extends RecipeProvider {
                             makePressurePlateRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
                         } else if(recipe == ATWRecipeTypes.SIGN){
                             LOGGER.info(recipe+" Found.");
-
                             makeSignRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                        } else if (recipe == ATWRecipeTypes.BARREL){
+                            for(BlockTypes inputBlockType :AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput){
+                                ResourceLocation slabInput = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(1).name().toLowerCase(Locale.ROOT));
+                                if(inputBlockType != BlockTypes.PLANKS) {
+                                    slabInput = new ResourceLocation(material.getModId(), material.getName() + "_" + inputBlockType.name().toLowerCase(Locale.ROOT));
+                                }
+                                makeBarrelRecipe(input, slabInput, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                            }
                         }
                     } else if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getRecipeType().isInGroup(ATWRecipeTypes.Group.TWO_INPUT)){
+                        LOGGER.info("missingBlockType recipe was in the " + recipe.getGroup()+" group.");
+                        //String name = missingBlockType.name().toLowerCase(Locale.ROOT);
+                        ResourceLocation input = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(0).name().toLowerCase(Locale.ROOT));
+                        LOGGER.info("Input item: "+input);
+                        ResourceLocation output = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
+                        LOGGER.info("Recipe output will be: "+output);
+                        LOGGER.info("missingBlockType recipe was a " + recipe.name().toLowerCase(Locale.ROOT)+" recipe.");
+                        ResourceLocation input2 = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(1).name().toLowerCase(Locale.ROOT));
+                        if (recipe == ATWRecipeTypes.BARREL){
+                            if(material.getModId() == "minecraft" && material.getName() == "oak"){
+                                output = new ResourceLocation(material.getModId(), AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT));
+                                LOGGER.info("output :"+output);
+                            }
+                            for(int i = 1; i < AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.size();i++){
+                                if(i>1){
+                                    input2 = new ResourceLocation(material.getModId(), material.getName()+"_"+AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(i).name().toLowerCase(Locale.ROOT));
+                                }
+                                makeBarrelRecipe(input, input2, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
+                            }
+
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void makeBarrelRecipe(ResourceLocation input, ResourceLocation slabInput, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        //logParameters(input, output, outputQuanity, consumer);
+        IItemProvider plank = getRegisteredItem(input);
+        IItemProvider slab = getRegisteredItem(slabInput);
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("#I#").pattern("# #").pattern("#I#").define('#', plank).define('I', slab).group(modId).unlockedBy(getPath(slab), has(slab)).save(consumer, getPath(result) + "_from_" + getPath(slab));
     }
 
     private void makeSignRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){

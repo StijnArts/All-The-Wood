@@ -33,12 +33,14 @@ public class ATWItemModelProvider extends ItemModelProvider {
                     LOGGER.info("missingBlockType: " + missingBlockType.name());
                     LOGGER.info(missingBlockType.getGroup().name());
                     for (RegistryObject<Block> block : module.BLOCKS_REGISTRY.getEntries()) {
-                        String name = missingBlockType.name().toLowerCase(Locale.ROOT);
                         String primaryLocation = module.getModId()+":"+material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
                         if(missingBlockType == BlockTypes.STRIPPED_LOG){
                             primaryLocation = module.getModId()+":stripped_"+material.getName()+"_log";
                         } else if(missingBlockType == BlockTypes.STRIPPED_WOOD){
                             primaryLocation = module.getModId()+":stripped_"+material.getName()+"_wood";
+                        }
+                        if((missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER) && (material.getModId().equals("minecraft") && material.getName().equals("oak"))){
+                            primaryLocation = module.getModId()+":"+missingBlockType.name().toLowerCase(Locale.ROOT);
                         }
                         LOGGER.info("block Primary Location: "+primaryLocation);
                         LOGGER.info(block.getId().toString());
@@ -49,13 +51,21 @@ public class ATWItemModelProvider extends ItemModelProvider {
                             if(missingBlockType == BlockTypes.FENCE){
                                 withExistingParent(block.getId().toString(), module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT)+"_inventory");
                             } else if(missingBlockType == BlockTypes.LADDER){
-                                if(material.getModId() != "minecraft" && material.getName() != "oak") {
-                                    withExistingParent(block.getId().toString(), module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT));
+                                if(material.getModId().equals("minecraft") && material.getName().equals("oak")) {
+                                    LOGGER.info("Found Oak Ladder");
+                                    singleTexture("ladder", mcLoc("item/generated"), "layer0",  new ResourceLocation(material.getModId(),"block/ladder"));
                                 } else {
-                                    withExistingParent(block.getId().toString(), module.getModId()+":block/"+missingBlockType.name().toLowerCase(Locale.ROOT));
-                                }
+                                    LOGGER.info("Found non-Oak Ladder");
+                                    singleTexture(material.getName()+"_ladder", mcLoc("item/generated"), "layer0",  new ResourceLocation(material.getModId(),"block/" + material.getName() + "_ladder"));
+                                    }
                             } else if(missingBlockType == BlockTypes.SIGN){
                                 singleTexture(material.getName() + "_sign", mcLoc("item/generated"), "layer0", new ResourceLocation(material.getModId(),"item/" + material.getName() + "_sign"));
+                            } else if(missingBlockType == BlockTypes.BARREL){
+                                if(material.getModId().equals("minecraft") && material.getName().equals("oak")) {
+                                    withExistingParent(block.getId().toString(), module.getModId()+":block/"+missingBlockType.name().toLowerCase(Locale.ROOT));
+                                } else {
+                                    withExistingParent(block.getId().toString(), module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT));
+                                    }
                             }
                             else {
                                 String parent = module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);

@@ -36,6 +36,11 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                         LOGGER.info("RegistryObject location: " + block.getId().toString());
                         String testLocation = "test_block";
                         String primaryLocation = material.getModId()+":"+material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
+                        if(missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER){
+                            if(module.getModId() == "minecraft" && material.getName() == "oak") {
+                                primaryLocation = material.getModId() + ":" + missingBlockType.name().toLowerCase(Locale.ROOT);
+                            }
+                        }
                         if(missingBlockType == BlockTypes.STRIPPED_LOG){
                             primaryLocation = material.getModId()+":stripped_"+material.getName()+"_log";
                         } else if(missingBlockType == BlockTypes.STRIPPED_WOOD){
@@ -92,6 +97,9 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                             } else if(missingBlockType == BlockTypes.SIGN){
                                 LOGGER.info("missingBlockType Was in " + missingBlockType);
                                 signBlock(block.get(),material.getName(),module.getModId());
+                            } else if(missingBlockType == BlockTypes.BARREL){
+                                LOGGER.info("missingBlockType Was in " + missingBlockType);
+                                barrelBlock(block.get(),material.getName(),module.getModId());
                             }
                         }
                         else if (block.getId().equals(modLoc(testLocation))) {
@@ -104,6 +112,46 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                 }
             }
         }
+    }
+
+    private void barrelBlock(Block block, String material, String modId){
+        ModelFile open;
+        ModelFile closed;
+        if(modId != "minecraft" && material != "oak") {
+            open = ((BlockModelBuilder)((BlockModelBuilder)((BlockModelBuilder)this.models().withExistingParent(material + "_barrel_open", this.mcLoc("block/cube_bottom_top"))).texture("top", new ResourceLocation(modId+ ":block/" + material + "_barrel_top_open"))).texture("bottom", new ResourceLocation(modId+ ":block/" + material + "_barrel_bottom"))).texture("side", new ResourceLocation(modId+ ":block/" + material + "_barrel_side"));
+            closed = ((BlockModelBuilder)((BlockModelBuilder)((BlockModelBuilder)this.models().withExistingParent(material + "_barrel", this.mcLoc("block/cube_bottom_top"))).texture("top", new ResourceLocation(modId+ ":block/" + material + "_barrel_top"))).texture("bottom", new ResourceLocation(modId+ ":block/" + material + "_barrel_bottom"))).texture("side", new ResourceLocation(modId+ ":block/" + material + "_barrel_side"));
+            } else {
+            open = ((BlockModelBuilder)((BlockModelBuilder)((BlockModelBuilder)this.models().withExistingParent("barrel_open", this.mcLoc("block/cube_bottom_top"))).texture("top", new ResourceLocation(modId+ ":block/barrel_top_open"))).texture("bottom", new ResourceLocation(modId+ ":block/barrel_bottom"))).texture("side", new ResourceLocation(modId+ ":block/barrel_side"));
+            closed = ((BlockModelBuilder)((BlockModelBuilder)((BlockModelBuilder)this.models().withExistingParent("barrel", this.mcLoc("block/cube_bottom_top"))).texture("top", new ResourceLocation(modId+ ":block/barrel_top"))).texture("bottom", new ResourceLocation(modId+ ":block/barrel_bottom"))).texture("side", new ResourceLocation(modId+ ":block/barrel_side"));
+        }
+        this.getVariantBuilder(block).forAllStates((state) -> {
+            boolean opened = (Boolean)state.getValue(BarrelBlock.OPEN);
+            Direction dir = (Direction)state.getValue(BarrelBlock.FACING);
+            int x = 0;
+            int y = 0;
+            switch(dir) {
+                case EAST:
+                    x = 90;
+                    y = 90;
+                    break;
+                case NORTH:
+                    x = 90;
+                    break;
+                case SOUTH:
+                    x = 90;
+                    y = 180;
+                    break;
+                case WEST:
+                    x = 90;
+                    y = 270;
+                    break;
+                case DOWN:
+                    x = 180;
+                case UP:
+            }
+
+            return ConfiguredModel.builder().modelFile(opened ? open : closed).rotationX(x).rotationY(y).build();
+        });
     }
 
     private void signBlock(Block block, String material, String modId) {
@@ -122,15 +170,22 @@ public class ATWBlockStateProvider extends BlockStateProvider {
 
     private void ladderBlock(LadderBlock block, String material, String modId){
         LOGGER.info("Ladder Block Method Called.");
-        LOGGER.info("name: "+material + "_ladder");
-        LOGGER.info("parent: "+ modId+":block/ladder");
-        LOGGER.info("texture: "+ modId+":block/" + material + "_ladder");
         ModelFile ladder;
-        if(modId != "minecraft" && material != "oak") {
-            ladder = (this.models().withExistingParent(material + "_ladder", modId + ":block/ladder")).texture("texture", modId + ":block/" + material + "_ladder");
+        if(modId.equals("minecraft") && material.equals("oak")) {
+            LOGGER.info("Ladder was oak ladder");
+            LOGGER.info("name: ladder");
+            LOGGER.info("parent: minecraft:block/ladder");
+            LOGGER.info("texture: "+ modId+":block/ladder");
+            ladder = (this.models().withExistingParent("ladder", modId + ":block/ladder")).texture("texture", modId + ":block/ladder");
+
         } else {
-            ladder = (this.models().withExistingParent(material + "_ladder", modId + ":block/ladder")).texture("texture", modId + ":block/ladder");
-        }
+            LOGGER.info("Ladder wasn't oak ladder");
+            LOGGER.info("name: "+material + "_ladder");
+            LOGGER.info("parent: "+ modId + ":block/"+material+"_ladder");
+            LOGGER.info("texture: "+ modId+":block/" + material + "_ladder");
+            ladder = (this.models().withExistingParent(material + "_ladder", "minecraft:block/ladder")).texture("texture", modId + ":block/" + material + "_ladder");
+
+            }
         this.horizontalBlock(block, ladder);
     }
 }

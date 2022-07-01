@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:oak_sign_from_oak_planks"
+      "minecraft:spruce_ladder_from_spruce_planks"
     ]
   },
   "criteria": {
-    "oak_planks": {
+    "spruce_planks": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:oak_planks"
+            "item": "minecraft:spruce_planks"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:oak_sign_from_oak_planks"
+        "recipe": "minecraft:spruce_ladder_from_spruce_planks"
       }
     }
   },
   "requirements": [
     [
-      "oak_planks",
+      "spruce_planks",
       "has_the_recipe"
     ]
   ]

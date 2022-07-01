@@ -11,7 +11,9 @@ public enum ATWRecipeTypes {
     LADDER,
     VERTICAL_LINE,
     PRESSURE_PLATE,
-    SIGN;
+    SIGN,
+    BARREL (Group.TWO_INPUT);
+
 
     private Group group;
 

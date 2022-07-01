@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "all_the_wood:block/oak_pressure_plate"
+    },
+    "powered=true": {
+      "model": "all_the_wood:block/oak_pressure_plate_down"
+    }
+  }
+}

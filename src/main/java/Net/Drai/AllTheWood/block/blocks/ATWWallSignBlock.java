@@ -17,4 +17,8 @@ public class ATWWallSignBlock extends WallSignBlock {
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new ATWSignTileEntity();
     }
+
+    public String getDescriptionId() {
+        return("");
+    }
 }

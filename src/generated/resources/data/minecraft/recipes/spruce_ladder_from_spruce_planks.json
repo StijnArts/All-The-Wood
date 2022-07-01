@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "minecraft",
+  "pattern": [
+    "I I",
+    "I#I",
+    "I I"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:spruce_planks"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "minecraft:spruce_ladder",
+    "count": 3
+  }
+}

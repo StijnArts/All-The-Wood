@@ -19,23 +19,19 @@ public class Minecraft extends SimpleModule {
     public static DeferredRegister<TileEntityType<?>> TILE_ENTITY_REGISTRY;
     public static DeferredRegister<Block> BLOCKS_REGISTRY;
     public static DeferredRegister<Item> ITEMS_REGISTRY;
-    //public static DeferredRegister<TileEntityType<?>> TILE_ENTITY_REGISTER;
-    //private static final List<Pair<String, TileEntityType<?>>> MODTILES;
-    //public static final TileEntityType<BNChestTileEntity> CHEST;
-    //public static final TileEntityType<BNBarrelTileEntity> BARREL;
-    //public static final TileEntityType<BNSignTileEntity> SIGN;
-
     public static ArrayList<BlockTypes> TILE_ENTITIES = new ArrayList<>();
     public static ArrayList<ATWMaterial> MATERIALS = new ArrayList<>();
     public static final Logger LOGGER = LogManager.getLogger();
     public static ArrayList<BlockType> BLOCK_TYPES = new ArrayList<>();
     public Minecraft(String modId) {
+
         super(modId);
         BLOCKS_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, modId);
         ITEMS_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, modId);
         TILE_ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, modId);
         setBlockRegister(BLOCKS_REGISTRY);
         setItemRegister(ITEMS_REGISTRY);
+
         registerModBlockTypes();
         setBLOCK_TYPES(BLOCK_TYPES);
         registerMaterials();
@@ -110,16 +106,26 @@ public class Minecraft extends SimpleModule {
         signRecipeInput.add(BlockTypes.PLANKS);
         BLOCK_TYPES.add(new BlockType("sign",BlockTypes.SIGN, RenderType.cutout()
                 , ItemGroup.TAB_DECORATIONS, ATWRecipeTypes.SIGN, signRecipeInput));
+        //Barrel
+        ArrayList<BlockTypes> barrelRecipeInput = new ArrayList<>();
+        barrelRecipeInput.add(BlockTypes.PLANKS);
+        barrelRecipeInput.add(BlockTypes.SLAB);
+        barrelRecipeInput.add(BlockTypes.PARQUET_SLAB);
+        BLOCK_TYPES.add(new BlockType("barrel",BlockTypes.BARREL, RenderType.solid()
+                , ItemGroup.TAB_DECORATIONS, ATWRecipeTypes.BARREL, barrelRecipeInput));
     }
 
     @Override
     public void registerMaterials() {
         MATERIALS.add(new ATWWood(getModId(),"oak", MaterialColor.WOOD, ItemGroup.TAB_BUILDING_BLOCKS,
-                new ArrayList<>(Arrays.asList(BlockTypes.SIGN))));
+                new ArrayList<>(Arrays.asList(BlockTypes.PRESSURE_PLATE, BlockTypes.LADDER))));
+        MATERIALS.add(new ATWWood(getModId(),"spruce", MaterialColor.WOOD, ItemGroup.TAB_BUILDING_BLOCKS,
+                new ArrayList<>(Arrays.asList(BlockTypes.LADDER))));
     }
 
     public void registerTileEntities(){
         TILE_ENTITIES.add(BlockTypes.SIGN);
+        TILE_ENTITIES.add(BlockTypes.BARREL);
     }
 //    static {
 //        MODTILES = new ArrayList();

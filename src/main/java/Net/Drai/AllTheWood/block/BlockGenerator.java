@@ -31,8 +31,10 @@ import org.apache.logging.log4j.*;
 import java.util.*;
 
 public class BlockGenerator {
-    public static RegistryObject<Block> solid, cutout_mipped, cutout, translucent, translucent_moving_block, translucent_no_crumbling;
-
+    public static ArrayList<RegistryObject<Block>> cutout_mipped, translucent_moving_block, translucent_no_crumbling;
+    public static ArrayList<RegistryObject<Block>> solid = new ArrayList<>();
+    public static ArrayList<RegistryObject<Block>> cutout = new ArrayList<>();
+    public static ArrayList<RegistryObject<Block>> translucent = new ArrayList<>();
     public static final Logger LOGGER = LogManager.getLogger();
     public static void registry(SimpleModule module) {
         LOGGER.info("Block Generation started.");
@@ -52,36 +54,39 @@ public class BlockGenerator {
                         itemGroup= material.getItemGroup();
                     }
                     String blockname = material.getName() + "_" + name;
+                    if((missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER) && (material.getModId().equals("minecraft") && material.getName().equals("oak"))){
+                        blockname = name;
+                    }
                     LOGGER.info("Missing Block Type in group: "+missingBlockType.getGroup());
                     if (missingBlockType.isInGroup(BlockTypes.Group.BLOCKS)) {
                         LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        solid = createBlock(blockname,
+                        solid.add(createBlock(blockname,
                                 () -> new Block(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
 
                     } else if (missingBlockType.isInGroup(BlockTypes.Group.SLABS)){
                         LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout = createBlock(blockname,
+                        cutout.add(createBlock(blockname,
                                 () -> new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
 
                     } else if (missingBlockType.isInGroup(BlockTypes.Group.STAIRS)){
                         LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout = createBlock(blockname,
+                        cutout.add(createBlock(blockname,
                                 () -> new StairsBlock(() -> material.getBlockState(), AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
 
                     } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCES)){
                         LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout = createBlock(blockname,
+                        cutout.add(createBlock(blockname,
                                 () -> new FenceBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
 
                     } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCE_GATES)) {
                         LOGGER.info(missingBlockType.getGroup().name() + " Found.");
-                        cutout = createBlock(blockname,
+                        cutout.add(createBlock(blockname,
                                 () -> new FenceGateBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
-                                , itemGroup, module.BLOCKS_REGISTRY, module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY, module.ITEM_REGISTRY));
 
                     } else if(missingBlockType.isInGroup(BlockTypes.Group.AXIS_BLOCKS)) {
                         LOGGER.info(missingBlockType.getGroup().name() + " Found.");
@@ -92,26 +97,30 @@ public class BlockGenerator {
                             blockname = "stripped_"+material.getName() + "_wood";
                         }
                         LOGGER.info("Blockname: "+blockname);
-                        solid = createBlock(blockname,
+                        solid.add(createBlock(blockname,
                                 () -> new RotatedPillarBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
                     }
 
 
 
                     else if(missingBlockType.isInGroup(BlockTypes.Group.NO_GROUP)){
-                        LOGGER.info(missingBlockType.getGroup().name()+"group block Found.");
+                        LOGGER.info(missingBlockType.getGroup().name()+" block Found.");
                         if (missingBlockType == BlockTypes.LADDER){
                             LOGGER.info(missingBlockType.name() + " Found.");
-                            cutout = createBlock(blockname,
+                            //LOGGER.info("Added block to Translucent RenderType");
+                            LOGGER.info(blockname);
+                            cutout.add(createBlock(blockname,
                                     () -> new LadderBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
-                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
                             } else if(missingBlockType == BlockTypes.PRESSURE_PLATE){
-                            cutout = createBlock(blockname,
+                            cutout.add(createBlock(blockname,
                                     () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING,AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
-                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
                             } else if(missingBlockType == BlockTypes.SIGN){
                                 TileEntities.SIGN_TILE_ENTITIES = createSignTileEntity(blockname, module, material, itemGroup);
+                            } else if(missingBlockType == BlockTypes.BARREL){
+                                TileEntities.BARREL_TILE_ENTITIES = createBarrelBlock(blockname, module, material, itemGroup);
                             }
                         }
 
@@ -143,7 +152,16 @@ public class BlockGenerator {
                 }
             }
     }
-
+    public static RegistryObject<TileEntityType<ATWBarrelTileEntity>> createBarrelBlock(String blockname, SimpleModule module, ATWMaterial material, ItemGroup itemGroup){
+        RegistryObject<Block> block = createBlock(blockname,
+                () -> new ATWBarrel(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
+                ,itemGroup,module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+        solid.add(block);
+        RegistryObject<TileEntityType<ATWBarrelTileEntity>> barrel = module.TILE_ENTITY_REGISTRY.register(blockname, () -> TileEntityType.Builder.of(ATWBarrelTileEntity::new,
+                block.get()
+        ).build(null));
+        return(barrel);
+    }
 
     public static RegistryObject<TileEntityType<ATWSignTileEntity>> createSignTileEntity(String blockname, SimpleModule module, ATWMaterial material, ItemGroup itemGroup){
         RegistryObject<Block> wall = createSignBlock(material.getName()+"_wall_sign",
@@ -152,9 +170,9 @@ public class BlockGenerator {
         RegistryObject<Block> standing = createSignBlock(blockname,
                 () -> new ATWStandingSignBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F).noCollission().noOcclusion())
                 , module.BLOCKS_REGISTRY);
-        createSignItem(blockname,itemGroup,module.ITEM_REGISTRY, standing, wall);
-        cutout = wall;
-        cutout = standing;
+        createSignItem(blockname,itemGroup,module.ITEM_REGISTRY, wall, standing);
+        cutout.add(wall);
+        cutout.add(standing);
         RegistryObject<TileEntityType<ATWSignTileEntity>> sign = module.TILE_ENTITY_REGISTRY.register(blockname, () -> TileEntityType.Builder.of(ATWSignTileEntity::new,
                         standing.get(),
                         wall.get()
