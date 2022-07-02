@@ -1,6 +1,6 @@
 {
-  "block.minecraft.ladder": "Oak Ladder",
+  "block.minecraft.oak_chest": "Oak Chest",
   "block.minecraft.oak_pressure_plate": "Oak Pressure Plate",
-  "block.minecraft.spruce_ladder": "Spruce Ladder",
+  "block.minecraft.spruce_chest": "Spruce Chest",
   "block.minecraft.spruce_sign": "Spruce Sign"
 }

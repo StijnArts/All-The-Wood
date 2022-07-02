@@ -1,16 +1,19 @@
 package Net.Drai.AllTheWood;
 
 import Net.Drai.AllTheWood.block.*;
+import Net.Drai.AllTheWood.block.blocks.*;
 import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.events.*;
 import Net.Drai.AllTheWood.material.*;
 import Net.Drai.AllTheWood.modules.*;
 import Net.Drai.AllTheWood.tileentitites.*;
+import Net.Drai.AllTheWood.tileentitites.renderer.*;
 import net.minecraft.block.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.tileentity.*;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.*;
@@ -34,7 +37,7 @@ import static java.util.Objects.isNull;
 public class AllTheWood {
     public static final String MOD_ID = "all_the_wood";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static ArrayList<WoodType> WOOD_TYPES;
+    public static ArrayList<WoodType> WOOD_TYPES = new ArrayList<>();
     public static final ArrayList<DeferredRegister<TileEntityType<?>>> TILE_ENTITIE_REGISTRY = new ArrayList<>();
     public static final ArrayList<DeferredRegister<Block>> BLOCKS_REGISTRY= new ArrayList<>();
     public static final ArrayList<DeferredRegister<Item>> ITEM_REGISTRY= new ArrayList<>();
@@ -79,18 +82,36 @@ public class AllTheWood {
                 RenderTypeLookup.setRenderLayer(cutoutBlock.get(), RenderType.translucent());
             }
         }
+        for (SimpleModule module : AllTheWood.MODULES) {
+            for (ATWMaterial material : module.getMATERIALS()) {
+                for (BlockTypes missingBlockType : material.MISSING_BLOCK_TYPES) {
+                    for (RegistryObject<Block> block : module.BLOCKS_REGISTRY.getEntries()) {
+                        if (block.get() instanceof ATWChestBlock) {
+                            String primaryLocation = material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);
+                            boolean isInPrimaryLocation = block.getId().toString().equals(primaryLocation);
+                            if(isInPrimaryLocation){
+                                ATWChestTileEntityRenderer.LAYERS.put(block.get(), new RenderType[]{RenderType.entitySolid(new ResourceLocation(material.getModId(), "textures/entity/chest/" + material.getName() + "/normal.png")), RenderType.entitySolid(new ResourceLocation(material.getModId(), "textures/entity/chest/" + material.getName()  + "/left.png")), RenderType.entitySolid(new ResourceLocation(material.getModId(), "textures/entity/chest/" + material.getName()  + "/right.png"))});
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         clientRegistryEntities();
     }
 
     void clientRegistryEntities() {
-        Boolean newSignEntitiesAdded = false;
-        Boolean newBarrelEntitiesAdded = false;
+        boolean newSignEntitiesAdded = false;
+        boolean newBarrelEntitiesAdded = false;
+        boolean newChestEntitiesAdded = false;
+        WoodType woodType = WoodType.OAK;
         for (SimpleModule module : MODULES) {
             for (ATWMaterial material: module.getMATERIALS()) {
                 for(BlockTypes missingBlockType: material.MISSING_BLOCK_TYPES){
                     if(missingBlockType == BlockTypes.SIGN){
                         newSignEntitiesAdded = true;
+                        woodType = material.woodType;
                     } else if(missingBlockType == BlockTypes.BARREL){
                         //newBarrelEntitiesAdded = true;
                     }
@@ -100,11 +121,11 @@ public class AllTheWood {
         if (newSignEntitiesAdded) {
             ClientRegistry.bindTileEntityRenderer(TileEntities.SIGN_TILE_ENTITIES.get(),
                     SignTileEntityRenderer::new);
-            Atlases.addWoodType(WoodType.OAK);
-        } else if (newBarrelEntitiesAdded) {
-            //ClientRegistry.bindTileEntityRenderer(TileEntities.BARREL_TILE_ENTITIES.get(),
-            //        BlockEntityR::new);
-            //Atlases.addWoodType(WoodType.OAK);
+            Atlases.addWoodType(woodType);
+        } else if (newChestEntitiesAdded) {
+            ClientRegistry.bindTileEntityRenderer(TileEntities.CHEST_TILE_ENTITIES.get(),
+                    ATWChestTileEntityRenderer::new);
+            Atlases.addWoodType(woodType);
         }
     }
 

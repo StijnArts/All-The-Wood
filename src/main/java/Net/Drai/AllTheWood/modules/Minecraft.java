@@ -5,6 +5,7 @@ import Net.Drai.AllTheWood.block.*;
 import Net.Drai.AllTheWood.block.enums.*;
 import Net.Drai.AllTheWood.material.*;
 import Net.Drai.AllTheWood.tileentitites.*;
+import com.minecraftabnormals.abnormals_core.core.api.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.client.renderer.*;
@@ -114,21 +115,30 @@ public class Minecraft extends SimpleModule {
         barrelRecipeInput.add(BlockTypes.PARQUET_SLAB);
         BLOCK_TYPES.add(new BlockType("barrel",BlockTypes.BARREL, RenderType.solid()
                 , ItemGroup.TAB_DECORATIONS, ATWRecipeTypes.BARREL, barrelRecipeInput));
+
+        //Chest
+        ArrayList<BlockTypes> ChestRecipeInput = new ArrayList<>();
+        ChestRecipeInput.add(BlockTypes.CHEST_TRAPPED);
+        BLOCK_TYPES.add(new BlockType("chest",BlockTypes.CHEST, RenderType.cutout()
+                , ItemGroup.TAB_DECORATIONS, ATWRecipeTypes.TRAPPED_CHEST, ChestRecipeInput));
     }
 
     @Override
     public void registerMaterials() {
         MATERIALS.add(new ATWWood(getModId(),"oak", MaterialColor.WOOD, WoodType.OAK,ItemGroup.TAB_BUILDING_BLOCKS,
-                new ArrayList<>(Arrays.asList(BlockTypes.PRESSURE_PLATE,BlockTypes.LADDER))));
+                new ArrayList<>(Arrays.asList(BlockTypes.PRESSURE_PLATE,BlockTypes.CHEST))));
         AllTheWood.WOOD_TYPES.add(WoodType.OAK);
         MATERIALS.add(new ATWWood(getModId(),"spruce", MaterialColor.WOOD, WoodType.SPRUCE, ItemGroup.TAB_BUILDING_BLOCKS,
-                new ArrayList<>(Arrays.asList(BlockTypes.SIGN, BlockTypes.LADDER))));
-        AllTheWood.WOOD_TYPES.add(WoodType.SPRUCE);
+                new ArrayList<>(Arrays.asList(BlockTypes.SIGN, BlockTypes.CHEST))));
+        AllTheWood.WOOD_TYPES.add(WoodType.OAK);
+
     }
 
     public void registerTileEntities(){
         TILE_ENTITIES.add(BlockTypes.SIGN);
         TILE_ENTITIES.add(BlockTypes.BARREL);
+        TILE_ENTITIES.add(BlockTypes.CHEST);
+        TILE_ENTITIES.add(BlockTypes.CHEST_TRAPPED);
     }
 //    static {
 //        MODTILES = new ArrayList();

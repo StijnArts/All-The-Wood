@@ -64,8 +64,10 @@ public class ATWItemModelProvider extends ItemModelProvider {
                                 if(material.getModId().equals("minecraft") && material.getName().equals("oak")) {
                                     withExistingParent(block.getId().toString(), module.getModId()+":block/"+missingBlockType.name().toLowerCase(Locale.ROOT));
                                 } else {
-                                    withExistingParent(block.getId().toString(), module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT));
+                                    withExistingParent(block.getId().toString(), module.getModId()+":block/" + material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT));
                                     }
+                            } else if(missingBlockType == BlockTypes.CHEST){
+                                ((ItemModelBuilder)((ItemModelBuilder)this.getBuilder(material.getName() + "_chest")).parent(new ModelFile.UncheckedModelFile("item/chest"))).texture("particle", new ResourceLocation(material.getModId(),"block/" +material.getName()  + "_planks"));
                             }
                             else {
                                 String parent = module.getModId()+":block/" +material.getName() + "_" + missingBlockType.name().toLowerCase(Locale.ROOT);

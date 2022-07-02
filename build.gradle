@@ -187,7 +187,7 @@ dependencies {
 
     //Libraries
         //AutoRegLib
-        //implementation fg.deobf("curse.maven:autoreglib-250363:3326041")
+        implementation fg.deobf("curse.maven:autoreglib-250363:3326041")
         //Puzzles Lib
         //implementation fg.deobf('curse.maven:puzzleslib-495476:3517499')
         //Placebo

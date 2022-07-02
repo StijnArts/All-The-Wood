@@ -1,6 +1,7 @@
 package Net.Drai.AllTheWood.block.enums;
 
 public enum ATWRecipeTypes {
+    TRAPPED_CHEST,
     TWOBYTWO,
     SLAB,
     STAIRS,

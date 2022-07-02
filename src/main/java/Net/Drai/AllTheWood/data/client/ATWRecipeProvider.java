@@ -109,14 +109,9 @@ public class ATWRecipeProvider extends RecipeProvider {
                         } else if(recipe == ATWRecipeTypes.SIGN){
                             LOGGER.info(recipe+" Found.");
                             makeSignRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-                        } else if (recipe == ATWRecipeTypes.BARREL){
-                            for(BlockTypes inputBlockType :AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput){
-                                ResourceLocation slabInput = new ResourceLocation(material.getModId(), material.getName() + "_" + AllTheWood.BLOCK_TYPES.get(missingBlockType).recipeInput.get(1).name().toLowerCase(Locale.ROOT));
-                                if(inputBlockType != BlockTypes.PLANKS) {
-                                    slabInput = new ResourceLocation(material.getModId(), material.getName() + "_" + inputBlockType.name().toLowerCase(Locale.ROOT));
-                                }
-                                makeBarrelRecipe(input, slabInput, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
-                            }
+                        } else if (recipe == ATWRecipeTypes.ROUND){
+                            LOGGER.info(recipe+" Found.");
+                            makeRoundRecipe(input, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
                         }
                     } else if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getRecipeType().isInGroup(ATWRecipeTypes.Group.TWO_INPUT)){
                         LOGGER.info("missingBlockType recipe was in the " + recipe.getGroup()+" group.");
@@ -138,12 +133,18 @@ public class ATWRecipeProvider extends RecipeProvider {
                                 }
                                 makeBarrelRecipe(input, input2, output, AllTheWood.BLOCK_TYPES.get(missingBlockType).getQuantityOut(), consumer);
                             }
-
                         }
                     }
                 }
             }
         }
+    }
+
+    private void makeRoundRecipe(ResourceLocation input, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){
+        //logParameters(input, output, outputQuanity, consumer);
+        IItemProvider ingredient = getRegisteredItem(input);
+        IItemProvider result = getRegisteredItem(output);
+        ShapedRecipeBuilder.shaped(result, outputQuanity).pattern("###").pattern("# #").pattern("###").define('#', ingredient).group(modId).unlockedBy(getPath(ingredient), has(ingredient)).save(consumer, getPath(result) + "_from_" + getPath(ingredient));
     }
 
     private void makeBarrelRecipe(ResourceLocation input, ResourceLocation slabInput, ResourceLocation output, int outputQuanity, Consumer<IFinishedRecipe> consumer){

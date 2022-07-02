@@ -42,85 +42,87 @@ public class BlockGenerator {
 //        cutout = createBlock("test_block",
 //                () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
 //                , ItemGroup.TAB_FOOD, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
-            for (ATWMaterial material : module.getMATERIALS()) {
-                LOGGER.info("material: " + material.getName());
-                for(BlockTypes missingBlockType: material.MISSING_BLOCK_TYPES){
-                    LOGGER.info("missingBlockType: " + missingBlockType.name());
-                    String name = AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT);
-                    ItemGroup itemGroup;
-                    if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup() != null){
-                        itemGroup= AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup();
-                    } else {
-                        itemGroup= material.getItemGroup();
+        for (ATWMaterial material : module.getMATERIALS()) {
+            LOGGER.info("material: " + material.getName());
+            for(BlockTypes missingBlockType: material.MISSING_BLOCK_TYPES){
+                LOGGER.info("missingBlockType: " + missingBlockType.name());
+                String name = AllTheWood.BLOCK_TYPES.get(missingBlockType).getName().toLowerCase(Locale.ROOT);
+                ItemGroup itemGroup;
+                if(AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup() != null){
+                    itemGroup= AllTheWood.BLOCK_TYPES.get(missingBlockType).getItemGroup();
+                } else {
+                    itemGroup= material.getItemGroup();
+                }
+                String blockname = material.getName() + "_" + name;
+                if((missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER) && (material.getModId().equals("minecraft") && material.getName().equals("oak"))){
+                    blockname = name;
+                }
+                LOGGER.info("Missing Block Type in group: "+missingBlockType.getGroup());
+                if (missingBlockType.isInGroup(BlockTypes.Group.BLOCKS)) {
+                    LOGGER.info(missingBlockType.getGroup().name()+" Found.");
+                    solid.add(createBlock(blockname,
+                            () -> new Block(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                            , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+                } else if (missingBlockType.isInGroup(BlockTypes.Group.SLABS)){
+                    LOGGER.info(missingBlockType.getGroup().name()+" Found.");
+                    cutout.add(createBlock(blockname,
+                            () -> new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                            , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+                } else if (missingBlockType.isInGroup(BlockTypes.Group.STAIRS)){
+                    LOGGER.info(missingBlockType.getGroup().name()+" Found.");
+                    cutout.add(createBlock(blockname,
+                            () -> new StairsBlock(() -> material.getBlockState(), AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                            , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+
+                } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCES)){
+                    LOGGER.info(missingBlockType.getGroup().name()+" Found.");
+                    cutout.add(createBlock(blockname,
+                            () -> new FenceBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                            , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+
+                } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCE_GATES)) {
+                    LOGGER.info(missingBlockType.getGroup().name() + " Found.");
+                    cutout.add(createBlock(blockname,
+                            () -> new FenceGateBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
+                            , itemGroup, module.BLOCKS_REGISTRY, module.ITEM_REGISTRY));
+
+                } else if(missingBlockType.isInGroup(BlockTypes.Group.AXIS_BLOCKS)) {
+                    LOGGER.info(missingBlockType.getGroup().name() + " Found.");
+                    LOGGER.info(missingBlockType.name() + " Found.");
+                    if(missingBlockType==BlockTypes.STRIPPED_LOG) {
+                        blockname = "stripped_"+material.getName() + "_log";
+                    } else if(missingBlockType==BlockTypes.STRIPPED_WOOD){
+                        blockname = "stripped_"+material.getName() + "_wood";
                     }
-                    String blockname = material.getName() + "_" + name;
-                    if((missingBlockType == BlockTypes.BARREL || missingBlockType == BlockTypes.LADDER) && (material.getModId().equals("minecraft") && material.getName().equals("oak"))){
-                        blockname = name;
-                    }
-                    LOGGER.info("Missing Block Type in group: "+missingBlockType.getGroup());
-                    if (missingBlockType.isInGroup(BlockTypes.Group.BLOCKS)) {
-                        LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        solid.add(createBlock(blockname,
-                                () -> new Block(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+                    LOGGER.info("Blockname: "+blockname);
+                    solid.add(createBlock(blockname,
+                            () -> new RotatedPillarBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                            , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+                }
 
-                    } else if (missingBlockType.isInGroup(BlockTypes.Group.SLABS)){
-                        LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout.add(createBlock(blockname,
-                                () -> new SlabBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-
-                    } else if (missingBlockType.isInGroup(BlockTypes.Group.STAIRS)){
-                        LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout.add(createBlock(blockname,
-                                () -> new StairsBlock(() -> material.getBlockState(), AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-
-                    } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCES)){
-                        LOGGER.info(missingBlockType.getGroup().name()+" Found.");
-                        cutout.add(createBlock(blockname,
-                                () -> new FenceBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
-                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-
-                    } else if (missingBlockType.isInGroup(BlockTypes.Group.FENCE_GATES)) {
-                        LOGGER.info(missingBlockType.getGroup().name() + " Found.");
-                        cutout.add(createBlock(blockname,
-                                () -> new FenceGateBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
-                                , itemGroup, module.BLOCKS_REGISTRY, module.ITEM_REGISTRY));
-
-                    } else if(missingBlockType.isInGroup(BlockTypes.Group.AXIS_BLOCKS)) {
-                        LOGGER.info(missingBlockType.getGroup().name() + " Found.");
+                else if(missingBlockType.isInGroup(BlockTypes.Group.NO_GROUP)){
+                    LOGGER.info(missingBlockType.getGroup().name()+" block Found.");
+                    if (missingBlockType == BlockTypes.LADDER){
                         LOGGER.info(missingBlockType.name() + " Found.");
-                        if(missingBlockType==BlockTypes.STRIPPED_LOG) {
-                            blockname = "stripped_"+material.getName() + "_log";
-                        } else if(missingBlockType==BlockTypes.STRIPPED_WOOD){
-                            blockname = "stripped_"+material.getName() + "_wood";
-                        }
-                        LOGGER.info("Blockname: "+blockname);
-                        solid.add(createBlock(blockname,
-                                () -> new RotatedPillarBlock(AbstractBlock.Properties.of(material.getMaterial(), material.getMaterialColor()).sound(material.getSoundType()).harvestTool(material.getToolType()).harvestLevel(material.getHarvestLevel()).strength(material.getStrengthLower(),material.getStrengthUpper()))
+                        //LOGGER.info("Added block to Translucent RenderType");
+                        LOGGER.info(blockname);
+                        cutout.add(createBlock(blockname,
+                                () -> new LadderBlock(AbstractBlock.Properties.copy(Blocks.LADDER).harvestTool(ToolType.AXE))
                                 , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-                    }
+                    } else if(missingBlockType == BlockTypes.PRESSURE_PLATE){
+                        cutout.add(createBlock(blockname,
+                                () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING,AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F).noCollission())
+                                , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
+                    } else if(missingBlockType == BlockTypes.SIGN){
+                        TileEntities.SIGN_TILE_ENTITIES = createSignTileEntity(blockname, module, material, itemGroup);
+                    } else if(missingBlockType == BlockTypes.BARREL){
+                        TileEntities.BARREL_TILE_ENTITIES = createBarrelBlock(blockname, module, material, itemGroup);
+                    } else if(missingBlockType == BlockTypes.CHEST){
+                        TileEntities.CHEST_TILE_ENTITIES = createChestBlock(blockname, module, material, itemGroup);
+                    } else if (missingBlockType == BlockTypes.CHEST_TRAPPED){
 
-                    else if(missingBlockType.isInGroup(BlockTypes.Group.NO_GROUP)){
-                        LOGGER.info(missingBlockType.getGroup().name()+" block Found.");
-                        if (missingBlockType == BlockTypes.LADDER){
-                            LOGGER.info(missingBlockType.name() + " Found.");
-                            //LOGGER.info("Added block to Translucent RenderType");
-                            LOGGER.info(blockname);
-                            cutout.add(createBlock(blockname,
-                                    () -> new LadderBlock(AbstractBlock.Properties.copy(Blocks.LADDER).harvestTool(ToolType.AXE))
-                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-                            } else if(missingBlockType == BlockTypes.PRESSURE_PLATE){
-                            cutout.add(createBlock(blockname,
-                                    () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING,AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F).noCollission())
-                                    , itemGroup, module.BLOCKS_REGISTRY,module.ITEM_REGISTRY));
-                            } else if(missingBlockType == BlockTypes.SIGN){
-                                TileEntities.SIGN_TILE_ENTITIES = createSignTileEntity(blockname, module, material, itemGroup);
-                            } else if(missingBlockType == BlockTypes.BARREL){
-                                TileEntities.BARREL_TILE_ENTITIES = createBarrelBlock(blockname, module, material, itemGroup);
-                            }
-                        }
+                    }
+                }
 
                     /* Example
                      * cutout = createBlock("" + material + "_" + name,
@@ -150,6 +152,17 @@ public class BlockGenerator {
                 }
             }
     }
+    public static RegistryObject<TileEntityType<ATWChestTileEntity>> createChestBlock(String blockname, SimpleModule module, ATWMaterial material, ItemGroup itemGroup){
+        RegistryObject<Block> block = createBlock(blockname,
+                () -> new ATWChestBlock(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))
+                ,itemGroup,module.BLOCKS_REGISTRY,module.ITEM_REGISTRY);
+        cutout.add(block);
+        RegistryObject<TileEntityType<ATWChestTileEntity>> chest = module.TILE_ENTITY_REGISTRY.register(blockname, () -> TileEntityType.Builder.of(ATWChestTileEntity::new,
+                block.get()
+        ).build(null));
+        return chest;
+    }
+
     public static RegistryObject<TileEntityType<ATWBarrelTileEntity>> createBarrelBlock(String blockname, SimpleModule module, ATWMaterial material, ItemGroup itemGroup){
         RegistryObject<Block> block = createBlock(blockname,
                 () -> new ATWBarrel(AbstractBlock.Properties.of(Material.WOOD, material.getMaterialColor()).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).strength(3.0F, 4.0F))

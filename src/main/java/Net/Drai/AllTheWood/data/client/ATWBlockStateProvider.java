@@ -100,6 +100,9 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                             } else if(missingBlockType == BlockTypes.BARREL){
                                 LOGGER.info("missingBlockType Was in " + missingBlockType);
                                 barrelBlock(block.get(),material.getName(),module.getModId());
+                            } else if(missingBlockType == BlockTypes.CHEST){
+                                LOGGER.info("missingBlockType Was in " + missingBlockType);
+                                chestBlock(block.get(), material.getName(), module.getModId());
                             }
                         }
                         else if (block.getId().equals(modLoc(testLocation))) {
@@ -112,6 +115,11 @@ public class ATWBlockStateProvider extends BlockStateProvider {
                 }
             }
         }
+    }
+
+    private void chestBlock(Block block, String material, String modId){
+        ModelFile texture = ((BlockModelBuilder)this.models().getBuilder(material + "_chest")).texture("particle", new ResourceLocation(modId+ ":block/" + material + "_planks"));
+        this.simpleBlock(block, texture);
     }
 
     private void barrelBlock(Block block, String material, String modId){
